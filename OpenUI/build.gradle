@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
 
-    implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:v0.1'
+    //implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:v0.1'
     
 	implementation "org.lwjgl:lwjgl:$lwjglVersion"
 	implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
