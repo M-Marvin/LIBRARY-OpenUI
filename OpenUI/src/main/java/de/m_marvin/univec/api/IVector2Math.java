@@ -11,7 +11,7 @@ public interface IVector2Math<N extends Number, VO extends IVector2<N>, VI exten
 	public VO setI(N x, N y);
 	public VO setI(VI vec);
 	
-	public VO copy();
+	public IVector2Math<N, VO, VI> copy();
 	
 	public VO add(VI vec);
 	public VO add(N x, N y);
