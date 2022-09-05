@@ -1,9 +1,8 @@
-package de.m_marvin.univec.impl;
+package de.m_marvin.render.translation;
 
-import de.m_marvin.univec.api.IQuaternion;
 import de.m_marvin.univec.api.IVector3;
 
-public class Quaternionf implements IQuaternion<Float> {
+public class Quaternionf {
 	
 	public float i;
 	public float j;
@@ -25,44 +24,40 @@ public class Quaternionf implements IQuaternion<Float> {
 		this.r = (float) Math.cos(rotationAngle / 2F);
 	}
 	
-	@Override
 	public Float i() {
 		return i;
 	}
 
-	@Override
 	public Float j() {
 		return j;
 	}
 
-	@Override
 	public Float k() {
 		return k;
 	}
 
-	@Override
 	public Float r() {
 		return r;
 	}
 
-	@Override
 	public void setI(Float i) {
 		this.i = i;
 	}
 
-	@Override
 	public void setJ(Float j) {
 		this.j = j;
 	}
 
-	@Override
 	public void setK(Float k) {
 		this.k = k;
 	}
 
-	@Override
 	public void setR(Float r) {
 		this.r = r;
 	}
-		
+	
+	public Quaternionf copy() {
+		return new Quaternionf(this.i, this.j, this.k, this.r);
+	}
+	
 }
