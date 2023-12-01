@@ -190,7 +190,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 		
 		for (Graph graph : this.graphs) {
 			
-			List<Vec2d> points = graph.dataPoints.stream().toList();
+			List<Vec2d> points = graph.dataPoints.stream().toList(); // TODO Concurent Exception
 			
 			float r = graph.color.getRed() / 255F;
 			float g = graph.color.getGreen() / 255F;
@@ -246,8 +246,8 @@ public class GraphComponent extends Component<ResourceLocation> {
 		
 		for (Graph graph : this.graphs) {
 			
+			if (graph.getDataPoints().isEmpty()) continue;
 			Vec2d end = graph.getDataPoints().getLast();
-			if (end == null) continue;
 			
 			Vec2i pos = new Vec2i(end).sub(new Vec2i(this.minValueX, this.minValueY)).mul(mult).add(0, this.size.y).clamp(new Vec2i(0, 0), this.size);
 			int xo = FontRenderer.calculateStringWidth(graph.title, this.font) / 2 + 5;

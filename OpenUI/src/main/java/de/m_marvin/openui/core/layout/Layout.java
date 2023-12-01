@@ -67,7 +67,7 @@ public abstract class Layout<T extends Layout.LayoutData> {
 			if (sizeMinAndMax[i][0] > min) min = sizeMinAndMax[i][0];
 			if ((sizeMinAndMax[i][1] < max || max == 0) && sizeMinAndMax[i][1] != 0) max = sizeMinAndMax[i][1];
 		}
-		if (min > max) return new int[] {min, min};
+		if (min > max && max != 0) return new int[] {min, min};
 		return new int[] {min, max};
 	}
 	

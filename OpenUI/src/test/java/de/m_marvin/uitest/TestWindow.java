@@ -27,6 +27,23 @@ public class TestWindow extends Window {
 	
 	@Override
 	protected void initUI() {
+		
+//		this.getRootComponent().setLayout(new GridLayout());
+//		
+//		GroupBox leftBox = new GroupBox();
+//		leftBox.setSizeMin(new Vec2i(500, 600));
+//		leftBox.setSizeMax(new Vec2i(500, 600));
+//		leftBox.setLayoutData(new GridLayout.GridLayoutData(0, 0));
+//		this.getRootComponent().addComponent(leftBox);
+//
+//		GroupBox rightBox = new GroupBox();
+//		rightBox.setSizeMin(new Vec2i(500, 600));
+//		rightBox.setSizeMax(new Vec2i(600, 700));
+//		rightBox.setLayoutData(new GridLayout.GridLayoutData(1, 0));
+//		this.getRootComponent().addComponent(rightBox);
+//		
+//		this.autoSetMinSize();
+		
 		this.getRootComponent().setLayout(new BorderLayout(CornerStretch.VERTICAL));
 		
 		GroupBox b = new GroupBox();
@@ -151,7 +168,7 @@ public class TestWindow extends Window {
 		this.getRootComponent().addComponent(b2);
 		this.getRootComponent().addComponent(b3);
 		this.getRootComponent().addComponent(b5);
-		this.getRootComponent().autoSetMinSize();
+		this.autoSetMinSize();
 		
 	}
 	
