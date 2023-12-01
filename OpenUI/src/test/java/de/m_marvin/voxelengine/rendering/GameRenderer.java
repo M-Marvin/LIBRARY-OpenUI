@@ -13,7 +13,7 @@ import de.m_marvin.renderengine.shaders.ShaderInstance;
 import de.m_marvin.renderengine.textures.AbstractTextureMap;
 import de.m_marvin.renderengine.translation.PoseStack;
 import de.m_marvin.unimat.impl.Matrix4f;
-import de.m_marvin.unimat.impl.Quaternion;
+import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.univec.impl.Vec4f;
 import de.m_marvin.voxelengine.VoxelEngine;
@@ -191,7 +191,7 @@ public class GameRenderer {
 						VertexBuffer buffer = compiledStructure.getBuffer(renderLayer);
 						
 						Vec3f position = structure.getPosition();
-						Quaternion rotation = structure.getRigidBody().getRotation();
+						Quaternionf rotation = structure.getRigidBody().getRotation();
 						Matrix4f translationMatrix = Matrix4f.translateMatrix(position.x, position.y, position.z).mul(rotation);
 						shader.getUniform("TranMat").setMatrix4f(translationMatrix);
 						
@@ -242,7 +242,7 @@ public class GameRenderer {
 		
 		AbstractTextureMap<ResourceLocation> texture = VoxelEngine.getInstance().getTextureLoader().getTextureMap(MATERIAL_ATLAS);
 		List<int[][][]> voxelGroups = component.getVoxels();
-		Quaternion orientation = Quaternion.fromOrientationMatrix(poseStack.last().normal());
+		Quaternionf orientation = new Quaternionf(poseStack.last().normal());
 		
 		poseStack.push();
 		poseStack.translate(component.getCenterOfShape().mul(-1F));

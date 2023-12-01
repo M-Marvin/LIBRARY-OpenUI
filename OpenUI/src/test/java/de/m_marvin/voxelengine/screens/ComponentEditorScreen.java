@@ -13,7 +13,7 @@ import de.m_marvin.renderengine.shaders.ShaderInstance;
 import de.m_marvin.renderengine.textures.AbstractTextureMap;
 import de.m_marvin.renderengine.translation.PoseStack;
 import de.m_marvin.unimat.impl.Matrix4f;
-import de.m_marvin.unimat.impl.Quaternion;
+import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
@@ -244,8 +244,8 @@ public class ComponentEditorScreen extends ScreenBase {
 					poseStack.push();
 					poseStack.translate(this.offset);
 					poseStack.scale(this.zoom, this.zoom, this.zoom);
-					poseStack.rotate(new Quaternion(new Vec3i(1, 0, 0), (float) this.rotation.y));
-					poseStack.rotate(new Quaternion(new Vec3i(0, 1, 0), (float) this.rotation.x));
+					poseStack.rotate(new Quaternionf(new Vec3i(1, 0, 0), (float) this.rotation.y));
+					poseStack.rotate(new Quaternionf(new Vec3i(0, 1, 0), (float) this.rotation.x));
 					
 					for (RenderType renderLayer : RenderType.voxelRenderLayers()) {	
 						BufferBuilder buffer = bufferSource.getBuffer(renderLayer);
@@ -291,8 +291,8 @@ public class ComponentEditorScreen extends ScreenBase {
 					poseStack.push();
 					poseStack.translate(this.offset);
 					poseStack.scale(this.zoom, this.zoom, this.zoom);
-					poseStack.rotate(new Quaternion(new Vec3i(1, 0, 0), (float) this.rotation.y));
-					poseStack.rotate(new Quaternion(new Vec3i(0, 1, 0), (float) this.rotation.x));
+					poseStack.rotate(new Quaternionf(new Vec3i(1, 0, 0), (float) this.rotation.y));
+					poseStack.rotate(new Quaternionf(new Vec3i(0, 1, 0), (float) this.rotation.x));
 					
 					RenderType renderLayer = RenderType.solid();
 					

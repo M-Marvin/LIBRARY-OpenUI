@@ -10,7 +10,7 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 
 import de.m_marvin.unimat.impl.Matrix4f;
-import de.m_marvin.unimat.impl.Quaternion;
+import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.voxelengine.physicengine.d3.physic.PropertyFlag;
 
@@ -24,9 +24,9 @@ public class SimplifiedRigidBody extends RigidBody {
 		super(constructionInfo);
 	}
 
-	public Quaternion getRotation() {
+	public Quaternionf getRotation() {
 		Quat4f quat = this.getOrientation(new Quat4f());
-		return new Quaternion(quat.x, quat.y, quat.z, quat.w);
+		return new Quaternionf(quat.x, quat.y, quat.z, quat.w);
 	}
 	
 	public Vec3f getPosition() {
@@ -47,7 +47,7 @@ public class SimplifiedRigidBody extends RigidBody {
 		this.setCenterOfMassTransform(t);
 	}
 	
-	public void setOrientation(Quaternion rotation) {
+	public void setOrientation(Quaternionf rotation) {
 		Transform t = this.getCenterOfMassTransform(new Transform());
 		t.setRotation(new Quat4f(rotation.i(), rotation.j(), rotation.k(), rotation.r()));
 		this.setCenterOfMassTransform(t);

@@ -3,7 +3,7 @@ package de.m_marvin.voxelengine.world;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.m_marvin.unimat.impl.Quaternion;
+import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.univec.impl.Vec3i;
 import de.m_marvin.voxelengine.VoxelEngine;
@@ -53,7 +53,7 @@ public class ClientLevel {
 
 		WorldObject plate = new GroundPlateObject();
 		dynamicWorld.addObject(plate);
-		plate.getRigidBody().setOrientation(new Quaternion(new Vec3i(1, 0, 0), 0));
+		plate.getRigidBody().setOrientation(new Quaternionf(new Vec3i(1, 0, 0), 0));
 		plate.getRigidBody().setPosition(new Vec3f(0F, -30F, 0F));
 	}
 	

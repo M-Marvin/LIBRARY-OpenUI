@@ -26,13 +26,13 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
 	// RenderEngine
-	implementation 'com.github.M-Marvin:LIBRARY-RenderEngine:11577850bb'
+	implementation 'com.github.M-Marvin:LIBRARY-RenderEngine:cacaa2f5bc'
 	
 	// CommandLineParser
 	implementation 'com.github.M-Marvin:LIBRARY-CommandLineParser:d527412'
 	
 	// UniVec
-	implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:0c5578b'
+	implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:1da6d35e86'
 	
 	// ArchiveUtility
 	implementation 'com.github.M-Marvin:LIBRARY-ArchiveUtility:1d7ec8abeb'

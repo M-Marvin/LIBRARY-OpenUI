@@ -131,7 +131,7 @@ public class Compound<R extends IResourceProvider<R>> {
 	
 	public void setSizeMax(Vec2i sizeMax) {
 		this.sizeMax = sizeMax;
-		this.sizeMax.minI(sizeMax);
+		this.sizeMax.min(sizeMax);
 	}
 	
 	public Vec2i getSizeMax() {
@@ -144,7 +144,7 @@ public class Compound<R extends IResourceProvider<R>> {
 	
 	public void setSizeMin(Vec2i sizeMin) {
 		this.sizeMin = sizeMin;
-		this.sizeMax.maxI(sizeMin);
+		this.sizeMax.max(sizeMin);
 	}
 	
 	public Vec2i getSizeMin() {

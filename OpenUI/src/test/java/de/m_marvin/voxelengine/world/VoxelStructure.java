@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.bulletphysics.collision.shapes.CompoundShape;
 
-import de.m_marvin.unimat.impl.Quaternion;
+import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.voxelengine.physicengine.d3.physic.IRigidObject;
 import de.m_marvin.voxelengine.physicengine.d3.physic.PropertyFlag;
@@ -20,9 +20,9 @@ public class VoxelStructure implements IRigidObject {
 		
 		public VoxelComponent component;
 		public Vec3f position;
-		public Quaternion orientation;
+		public Quaternionf orientation;
 		
-		public StructureComponent(VoxelComponent component, Vec3f position, Quaternion orientation) {
+		public StructureComponent(VoxelComponent component, Vec3f position, Quaternionf orientation) {
 			this.component = component;
 			this.position = position;
 			this.orientation = orientation;
@@ -38,7 +38,7 @@ public class VoxelStructure implements IRigidObject {
 	protected CompoundShape collisionShape;
 	protected SimplifiedRigidBody rigidBody;
 	
-	public void addComponent(VoxelComponent component, Vec3f position, Quaternion orientation) {
+	public void addComponent(VoxelComponent component, Vec3f position, Quaternionf orientation) {
 		this.components.add(new StructureComponent(component, position, orientation));
 		rebuildShape();
 	}
@@ -81,11 +81,11 @@ public class VoxelStructure implements IRigidObject {
 		this.rigidBody.setPosition(position.div(PHYSICS_2_VOXEL_FACTOR));
 	}
 	
-	public Quaternion getOrientation() {
+	public Quaternionf getOrientation() {
 		return this.rigidBody.getRotation();
 	}
 	
-	public void setOrientation(Quaternion rotation) {
+	public void setOrientation(Quaternionf rotation) {
 		this.rigidBody.setOrientation(rotation);
 	}
 	

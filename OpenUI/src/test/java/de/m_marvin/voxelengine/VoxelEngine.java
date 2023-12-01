@@ -21,7 +21,7 @@ import de.m_marvin.renderengine.windows.Window;
 import de.m_marvin.simplelogging.filehandling.LogFileHandler;
 import de.m_marvin.simplelogging.printing.LogType;
 import de.m_marvin.simplelogging.printing.Logger;
-import de.m_marvin.unimat.impl.Quaternion;
+import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.univec.impl.Vec3i;
 import de.m_marvin.voxelengine.deprecated.ScreenUI;
@@ -340,7 +340,7 @@ public class VoxelEngine {
 		// Testing
 		VoxelComponent c = voxelLoader.get(new ResourceLocation("example:test")); //
 		VoxelStructure s = new VoxelStructure();
-		s.addComponent(c, new Vec3f(0F, 0F, 0F), new Quaternion(new Vec3i(1, 0, 0), (float) Math.toRadians(45)));
+		s.addComponent(c, new Vec3f(0F, 0F, 0F), new Quaternionf(new Vec3i(1, 0, 0), (float) Math.toRadians(45)));
 		level.addStructure(s);
 		s.setPosition(new Vec3f(-20F, 0F, 0F));
 		//s.setOrientation(new Quaternion(new Vec3i(1, 0, 0), (float) Math.toRadians(45)));
@@ -348,14 +348,14 @@ public class VoxelEngine {
 		VoxelComponent c2 = voxelLoader.get(new ResourceLocation("example:metal_block"));
 		VoxelComponent c22 = voxelLoader.get(new ResourceLocation("example:metal_block"));
 		VoxelStructure s4 = new VoxelStructure();
-		s4.addComponent(c2, new Vec3f(0F, 0F, 0F), new Quaternion(new Vec3i(1, 0, 0), 0));
-		s4.addComponent(c22, new Vec3f(0F, 20F, 0F), new Quaternion(new Vec3i(1, 0, 0), 45));
+		s4.addComponent(c2, new Vec3f(0F, 0F, 0F), new Quaternionf(new Vec3i(1, 0, 0), 0));
+		s4.addComponent(c22, new Vec3f(0F, 20F, 0F), new Quaternionf(new Vec3i(1, 0, 0), 45));
 		level.addStructure(s4);
 		s4.setPosition(new Vec3f(0F, 40F, 0F));
 		
 		VoxelComponent c3 = voxelLoader.get(new ResourceLocation("example:ground"));
 		VoxelStructure s5 = new VoxelStructure();
-		s5.addComponent(c3, new Vec3f(0F, 0F, 0F), new Quaternion(new Vec3i(1, 0, 0), 0));
+		s5.addComponent(c3, new Vec3f(0F, 0F, 0F), new Quaternionf(new Vec3i(1, 0, 0), 0));
 		level.addStructure(s5);
 		s5.setStatic(true);
 		s5.setPosition(new Vec3f(-20F, -80F, -20F));
