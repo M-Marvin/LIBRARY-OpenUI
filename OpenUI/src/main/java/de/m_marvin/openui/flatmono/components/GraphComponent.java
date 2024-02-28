@@ -8,9 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import de.m_marvin.openui.core.TextRenderer;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
-import de.m_marvin.openui.flatmono.TextRenderer;
 import de.m_marvin.openui.flatmono.UIRenderModes;
 import de.m_marvin.openui.flatmono.UtilRenderer;
 import de.m_marvin.renderengine.buffers.BufferBuilder;

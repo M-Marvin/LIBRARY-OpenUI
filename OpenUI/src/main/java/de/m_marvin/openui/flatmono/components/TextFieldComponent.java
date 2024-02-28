@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import de.m_marvin.openui.core.TextRenderer;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
-import de.m_marvin.openui.flatmono.TextRenderer;
 import de.m_marvin.openui.flatmono.UtilRenderer;
 import de.m_marvin.renderengine.buffers.defimpl.SimpleBufferSource;
 import de.m_marvin.renderengine.fontrendering.FontRenderer;

@@ -1,9 +1,9 @@
-package de.m_marvin.openui.flatmono;
+package de.m_marvin.openui.core;
 
 import java.awt.Color;
 import java.awt.Font;
 
-import de.m_marvin.openui.core.UIRenderMode;
+import de.m_marvin.openui.flatmono.UIRenderModes;
 import de.m_marvin.renderengine.buffers.IBufferSource;
 import de.m_marvin.renderengine.fontrendering.FontRenderer;
 import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
@@ -12,7 +12,7 @@ import de.m_marvin.renderengine.translation.PoseStack;
 
 public class TextRenderer {
 	
-	public static final ResourceLocation FONT_ATLASES_LOCATION = new ResourceLocation(UIResourceFolders.NAMESPACE, "ui/font");
+	public static final ResourceLocation FONT_ATLASES_LOCATION = new ResourceLocation("core", "ui/font");
 	
 	public static void renderText(String text, Font font, Color color, TextureLoader<ResourceLocation, ?> textureLoader, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		FontRenderer.renderString(text, color, font, FONT_ATLASES_LOCATION, UIRenderModes::texturedSolid, textureLoader, bufferSource, matrixStack);

@@ -31,11 +31,11 @@ public class LN2CoolingSystemController {
 
 		this.parameterData.parseData("EVT22\nEVP988\nCDT22\nCDF192\nCMP0\nEXP10\n");
 		
-		this.serialPort = new SerialPort("COM5");
-		if (!this.serialPort.openPort()) {
-			Logger.defaultLogger().logError("Failed to access serial port!");
-			return;
-		}
+//		this.serialPort = new SerialPort("COM5");
+//		if (!this.serialPort.openPort()) {
+//			Logger.defaultLogger().logError("Failed to access serial port!");
+//			return;
+//		}
 		
 		this.statusWindow = new StatusMonitorWindow(this.parameterData);
 		this.statusWindow.start();
@@ -43,10 +43,10 @@ public class LN2CoolingSystemController {
 		while (this.statusWindow.isOpen()) {
 			try { Thread.sleep(1000); } catch (InterruptedException e) {}
 			
-			String dataString = this.serialPort.readString();
-			if (this.parameterData.parseData(dataString)) {
-				this.statusWindow.update();
-			}
+//			String dataString = this.serialPort.readString();
+//			if (this.parameterData.parseData(dataString)) {
+//				this.statusWindow.update();
+//			}
 			
 		}
 		

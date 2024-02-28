@@ -1,4 +1,4 @@
-package de.m_marvin.openui.flatmono;
+package de.m_marvin.openui.core;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,31 +10,33 @@ import de.m_marvin.archiveutility.ArchiveUtility;
 import de.m_marvin.renderengine.resources.ISourceFolder;
 import de.m_marvin.renderengine.resources.ResourceLoader;
 
-public enum UIResourceFolders implements ISourceFolder {
+public class UIResourceFolder implements ISourceFolder {
 
-	SHADERS("shaders"),
-	TEXTURES("textures");
+	public static final UIResourceFolder SHADERS = new UIResourceFolder("shaders");
+	public static final UIResourceFolder TEXTURES = new UIResourceFolder("textures");
 
-	public static final String NAMESPACE = "flatmono";
-	
 	public static final String ASSETS_PACKAGE = "/openui/assets/";
+	
+	public String getFolderName() {
+		return folderName;
+	}
 	
 	public static List<ArchiveUtility> archives = new ArrayList<>();
 	
 	static {
-		archives.add(new ArchiveUtility(UIResourceFolders.class));
+		archives.add(new ArchiveUtility(UIResourceFolder.class));
 	}
 	
 	public static void addArchive(ArchiveUtility archive) {
 		archives.add(archive);
 	}
-	
+
 	private final String folderName;
 	
-	private UIResourceFolders(String folderName) {
+	public UIResourceFolder(String folderName) {
 		this.folderName = folderName;
 	}
-
+	
 	@Override
 	public String getPath(ResourceLoader<?, ?> loader, String namespace) {
 		return ASSETS_PACKAGE + namespace + "/" + this.folderName;

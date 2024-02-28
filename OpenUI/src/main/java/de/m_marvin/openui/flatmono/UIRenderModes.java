@@ -15,10 +15,10 @@ import de.m_marvin.renderengine.vertices.VertexFormat;
 
 public class UIRenderModes {
 	
-	public static final ResourceLocation SHADER_PLAIN_SOLID = new ResourceLocation(UIResourceFolders.NAMESPACE, "ui/plain_solid");
-	public static final ResourceLocation SHADER_TEXTURED_SOLID = new ResourceLocation(UIResourceFolders.NAMESPACE, "ui/textured_solid");
-	public static final ResourceLocation SHADER_PLAIN_CLICKABLE = new ResourceLocation(UIResourceFolders.NAMESPACE, "ui/plain_clickable");
-	public static final ResourceLocation SHADER_PLAIN_CIRCLE = new ResourceLocation(UIResourceFolders.NAMESPACE, "ui/plain_circle");
+	public static final ResourceLocation SHADER_PLAIN_SOLID = new ResourceLocation(Window.NAMESPACE, "ui/plain_solid");
+	public static final ResourceLocation SHADER_TEXTURED_SOLID = new ResourceLocation(Window.NAMESPACE, "ui/textured_solid");
+	public static final ResourceLocation SHADER_PLAIN_CLICKABLE = new ResourceLocation(Window.NAMESPACE, "ui/plain_clickable");
+	public static final ResourceLocation SHADER_PLAIN_CIRCLE = new ResourceLocation(Window.NAMESPACE, "ui/plain_circle");
 	
 	public static final int RENDER_ORDER_SOLID = 0;
 	public static final int RENDER_ORDER_TRANSPARENT_0 = 1;

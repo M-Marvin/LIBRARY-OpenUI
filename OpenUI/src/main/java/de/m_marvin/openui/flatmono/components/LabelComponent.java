@@ -3,9 +3,9 @@ package de.m_marvin.openui.flatmono.components;
 import java.awt.Color;
 import java.awt.Font;
 
+import de.m_marvin.openui.core.TextRenderer;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
-import de.m_marvin.openui.flatmono.TextRenderer;
 import de.m_marvin.renderengine.buffers.defimpl.SimpleBufferSource;
 import de.m_marvin.renderengine.fontrendering.FontRenderer;
 import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
