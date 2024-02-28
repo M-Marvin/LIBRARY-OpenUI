@@ -41,7 +41,11 @@ public class AlignmentLayout extends Layout<AlignmentLayout.AlignmentLayoutData>
 		for (Compound<R> c : childComponents) {
 			Alignment alignment = c.getLayoutData(this).alignment;
 			
-			c.setSizeMargin(compound.getSize().min(c.getSizeMaxMargin()).max(c.getSizeMinMargin()));
+			Vec2i size = new Vec2i(
+					c.getSizeMaxMargin().x <= 0 ? compound.getSize().x : Math.min(compound.getSize().x, c.getSizeMaxMargin().x),
+					c.getSizeMaxMargin().y <= 0 ? compound.getSize().y : Math.min(compound.getSize().y, c.getSizeMaxMargin().y)
+					);
+			c.setSizeMargin(size.max(c.getSizeMinMargin()));
 			
 			switch (alignment) {
 			case LEFT: 		c.setOffsetMargin(new Vec2i(0, compound.getSize().y / 2 - c.getSize().y / 2)); break;
