@@ -28,6 +28,7 @@ public class Component<R extends IResourceProvider<R>> extends Compound<R> {
 	}
 	
 	protected void cursorMove(Vec2d position, boolean entered, boolean leaved) {
+		if (!this.isVisible()) return;
 		boolean overComponent = this.container.getTopComponentUnderCursor() == this;
 		if (overComponent != this.cursorOverComponent || this.cursorOverComponent) {
 			if (overComponent != this.cursorOverComponent) {
@@ -39,6 +40,7 @@ public class Component<R extends IResourceProvider<R>> extends Compound<R> {
 	}
 	
 	protected void mouseEvent(Optional<Vec2d> scroll, int button, boolean pressed, boolean repeated) {
+		if (!this.isVisible()) return;
 		if (this.cursorOverComponent) {
 			if (scroll.isPresent()) {
 				this.onScroll(scroll.get());

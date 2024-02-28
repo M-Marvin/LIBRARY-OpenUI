@@ -154,7 +154,10 @@ public class TestWindow extends Window {
 				b6.setLayoutData(new GridLayout.GridLayoutData(i, t + 10));
 				int a = i;
 				int c = t;
-				b6.setAction((state) -> System.out.println("Toggle " + (state ? "on" : "off") + " " + a + "/" + c));
+				b6.setAction((state) -> {
+					System.out.println("ToggleX " + (state ? "on" : "off") + " " + a + "/" + c);
+					b.setVisible(state);
+				});
 				b5.addComponent(b6);
 				
 			}

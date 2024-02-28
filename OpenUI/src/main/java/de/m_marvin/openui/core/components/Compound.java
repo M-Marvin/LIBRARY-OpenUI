@@ -29,6 +29,7 @@ public class Compound<R extends IResourceProvider<R>> {
 	protected Layout<?> layout;
 	protected LayoutData layoutData;
 	protected List<Compound<R>> childComponents;
+	protected boolean visible;
 	protected boolean needsRedraw;
 	
 	public Compound() {
@@ -43,6 +44,7 @@ public class Compound<R extends IResourceProvider<R>> {
 		this.marginBottom = 0;
 		this.layout = null;
 		this.childComponents = new ArrayList<>();
+		this.visible = true;
 		this.needsRedraw = true;
 	}
 	
@@ -82,15 +84,27 @@ public class Compound<R extends IResourceProvider<R>> {
 		return container;
 	}
 	
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+		this.redraw();
+		this.childComponents.forEach(c -> c.setVisible(visible));
+	}
+	
+	public boolean isVisible() {
+		return visible;
+	}
+	
 	public void setup() {}
 	public void cleanup() {}
 	
 	public void addComponent(Compound<R> childComponent) {
+		if (this.childComponents.contains(childComponent)) return;
 		this.childComponents.add(childComponent);
 		childComponent.setContainer(container);
 	}
 	
 	public void removeComponent(Compound<R> childComponent) {
+		if (!this.childComponents.contains(childComponent)) return;
 		this.container.deleteVAOs(childComponent);
 		childComponent.setContainer(null);
 		this.childComponents.remove(childComponent);
@@ -263,9 +277,11 @@ public class Compound<R extends IResourceProvider<R>> {
 	}
 	
 	public void render(SimpleBufferSource<R, UIRenderMode<R>> bufferSource, PoseStack matrixStack) {
-		drawBackground(bufferSource, matrixStack);
-		shiftRenderLayer();
-		drawForeground(bufferSource, matrixStack);
+		if (this.visible) {
+			drawBackground(bufferSource, matrixStack);
+			shiftRenderLayer();
+			drawForeground(bufferSource, matrixStack);
+		}
 	}
 	
 	public void shiftRenderLayer() {

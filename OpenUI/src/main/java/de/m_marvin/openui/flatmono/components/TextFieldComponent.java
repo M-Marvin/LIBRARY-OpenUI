@@ -202,6 +202,7 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 	}
 	
 	protected void keyTyped(int keycode, int scancode, boolean pressed, boolean released) {
+		if (!this.isVisible()) return;
 		
 		if (this.isFocused() && pressed) {
 			
@@ -246,6 +247,7 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 	}
 	
 	protected void textInput(int codepoint, Optional<FunctionalKey> functionalKey) {
+		if (!this.isVisible()) return;
 		
 		if (this.isFocused()) {
 			
