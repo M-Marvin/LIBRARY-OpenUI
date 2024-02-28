@@ -96,6 +96,10 @@ public class UIContainer<R extends IResourceProvider<R>> {
 	public Vec2i calculateMinScreenSize() {
 		return compound.calculateMinSize();
 	}
+
+	public Vec2i calculateMaxScreenSize() {
+		return compound.calculateMaxSize();
+	}
 	
 	public void setFocusedComponent(Compound<R> component) {
 		if (component == this.focused) return;

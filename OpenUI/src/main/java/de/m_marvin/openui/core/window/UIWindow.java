@@ -209,6 +209,12 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		Vec2i minSize = this.uiContainer.calculateMinScreenSize();
 		this.mainWindow.setMinSize(minSize.x, minSize.y);
 	}
+
+	protected void autoSetMinAndMaxSize() {
+		Vec2i minSize = this.uiContainer.calculateMinScreenSize();
+		Vec2i maxSize = this.uiContainer.calculateMaxScreenSize();
+		this.mainWindow.setSizeLimits(minSize.x, minSize.y, maxSize.x, maxSize.y);
+	}
 	
 	protected void windowResized(Vec2i screenSize) {
 		GLStateManager.resizeViewport(0, 0, screenSize.x, screenSize.y);
