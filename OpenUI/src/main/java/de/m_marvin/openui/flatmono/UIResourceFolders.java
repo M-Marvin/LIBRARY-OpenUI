@@ -46,4 +46,9 @@ public enum UIResourceFolders implements ISourceFolder {
 		return ARCHIVE_ACCESS.listFolders(path);
 	}
 
+	@Override
+	public String[] listNamespaces() {
+		return ARCHIVE_ACCESS.listFolders(ASSETS_PACKAGE);
+	}
+	
 }

@@ -26,22 +26,22 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
 	// RenderEngine
-	implementation 'com.github.M-Marvin:LIBRARY-RenderEngine:cacaa2f5bc'
+	implementation 'com.github.M-Marvin:LIBRARY-RenderEngine:main-SNAPSHOT'
 	
 	// CommandLineParser
-	implementation 'com.github.M-Marvin:LIBRARY-CommandLineParser:d527412'
+	implementation 'com.github.M-Marvin:LIBRARY-CommandLineParser:main-SNAPSHOT'
 	
 	// UniVec
-	implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:1da6d35e86'
+	implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:main-SNAPSHOT'
 	
 	// ArchiveUtility
-	implementation 'com.github.M-Marvin:LIBRARY-ArchiveUtility:1d7ec8abeb'
+	implementation 'com.github.M-Marvin:LIBRARY-ArchiveUtility:main-SNAPSHOT'
 	
 	// GSON
 	implementation "com.google.code.gson:gson:2.9.1"
 	
 	// SimpleLogging
-	implementation 'com.github.M-Marvin:LIBRARY-SimpleLogging:6da9e66783af7dd5d60188bbfc09648fd35fbf60'
+	implementation 'com.github.M-Marvin:LIBRARY-SimpleLogging:main-SNAPSHOT'
 	
 	// JBullet (Voxel Engine)
 	implementation "cz.advel.jbullet:jbullet:20101010-1"

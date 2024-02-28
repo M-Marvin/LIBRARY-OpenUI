@@ -45,5 +45,12 @@ public enum ResourceFolders implements ISourceFolder {
 		if (folder.isDirectory()) return Stream.of(folder.list()).filter(s -> new File(folder, s).isDirectory()).toArray(i -> new String[i]);
 		return new String[] {};
 	}
+
+	@Override
+	public String[] listNamespaces() {
+		return Stream.of(new File(ResourceLoader.getRuntimeFolder()).list())
+				.filter(f -> new File(ResourceLoader.getRuntimeFolder(), f).isDirectory())
+				.toArray(i -> new String[i]);
+	}
 	
 }

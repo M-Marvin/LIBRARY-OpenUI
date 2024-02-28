@@ -1,7 +1,6 @@
 package de.m_marvin.voxelengine;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL33;
@@ -10,7 +9,7 @@ import de.m_marvin.renderengine.GLStateManager;
 import de.m_marvin.renderengine.inputbinding.UserInput;
 import de.m_marvin.renderengine.inputbinding.bindingsource.KeySource;
 import de.m_marvin.renderengine.inputbinding.bindingsource.MouseSource;
-import de.m_marvin.renderengine.models.OBJLoader;
+import de.m_marvin.renderengine.models.ModelLoader;
 import de.m_marvin.renderengine.resources.FileUtility;
 import de.m_marvin.renderengine.resources.ResourceLoader;
 import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
@@ -43,17 +42,9 @@ public class VoxelEngine {
 	
 	public static void main(String... args) {
 
-		// Start new logger
-		try {
-			logFileHandler = new LogFileHandler(new File(new File(ResourceLoader.getRuntimeFolder()).getParentFile().getParentFile(), "run/logs"), "EngineTest");
-			Logger logger = logFileHandler.beginLogging();
-			Logger.setDefaultLogger(logger);
-		} catch (IOException e) {
-			System.err.println("Failed to create logger!");
-			e.printStackTrace();
-			logFileHandler = null;
-			Logger.setDefaultLogger(new Logger());
-		}
+		logFileHandler = new LogFileHandler(new File(new File(ResourceLoader.getRuntimeFolder()).getParentFile().getParentFile(), "run/logs"), "EngineTest");
+		Logger logger = logFileHandler.beginLogging();
+		Logger.setDefaultLogger(logger);
 		
 		// Redirect run folder (since all resources are located in the test folder)
 		ResourceLoader.redirectRuntimeFolder(VoxelEngine.class.getClassLoader().getResource("").getPath().replace("bin/main/", "run/"));
@@ -68,12 +59,7 @@ public class VoxelEngine {
 		
 		// Terminate logger
 		if (logFileHandler != null) {
-			try {
-				logFileHandler.endLogging();
-			} catch (IOException e) {
-				System.err.println("Failed to terminate logger, the log files might be corrupted!");
-				e.printStackTrace();
-			}
+			logFileHandler.endLogging();
 		}
 		
 	}
@@ -90,7 +76,7 @@ public class VoxelEngine {
 	protected ResourceLoader<ResourceLocation, ResourceFolders> resourceLoader;
 	protected ShaderLoader<ResourceLocation, ResourceFolders> shaderLoader;
 	protected TextureLoader<ResourceLocation, ResourceFolders> textureLoader;
-	protected OBJLoader<ResourceLocation, ResourceFolders> modelLoader;
+	protected ModelLoader<ResourceLocation, ResourceFolders> modelLoader;
 	protected ReloadState clientReloadState;
 	
 	protected VoxelComponentLoader<ResourceLocation, ResourceFolders> voxelLoader;
@@ -128,7 +114,7 @@ public class VoxelEngine {
 		resourceLoader = new ResourceLoader<>();
 		shaderLoader = new ShaderLoader<ResourceLocation, ResourceFolders>(ResourceFolders.SHADERS, resourceLoader);
 		textureLoader = new TextureLoader<ResourceLocation, ResourceFolders>(ResourceFolders.TEXTURES, resourceLoader);
-		modelLoader = new OBJLoader<ResourceLocation, ResourceFolders>(ResourceFolders.MODELS, resourceLoader);
+		modelLoader = new ModelLoader<ResourceLocation, ResourceFolders>(ResourceFolders.MODELS, resourceLoader);
 		clientReloadState = ReloadState.RELOAD_RENDER_THREAD;
 		
 		// Setup additional loaders
@@ -383,13 +369,13 @@ public class VoxelEngine {
 				
 				// Load shaders
 				FileUtility.executeForEachFolder(resourceLoader, ResourceFolders.SHADERS, new ResourceLocation(NAMESPACE, ""), 
-						(folder) -> shaderLoader.loadShadersIn(folder));
+						(folder) -> shaderLoader.loadShadersIn(folder, 10));
 				
 				// Load textures
 				FileUtility.executeForEachFolder(resourceLoader, ResourceFolders.TEXTURES, new ResourceLocation(NAMESPACE, ""),
 						(folder) -> {
-							textureLoader.buildAtlasMapFromTextures(folder, folder, false, false);
-							textureLoader.buildAtlasMapFromTextures(folder, new ResourceLocation(NAMESPACE, folder.getPath() + "_interpolated"), false, true);
+							textureLoader.buildAtlasMapFromTextures(folder, folder, false, false, 10, false);
+							textureLoader.buildAtlasMapFromTextures(folder, new ResourceLocation(NAMESPACE, folder.getPath() + "_interpolated"), false, true, 10, false);
 						});
 				
 				gameRenderer.resetRenderCache();
@@ -474,7 +460,7 @@ public class VoxelEngine {
 		return textureLoader;
 	}
 	
-	public OBJLoader<ResourceLocation, ResourceFolders> getModelLoader() {
+	public ModelLoader<ResourceLocation, ResourceFolders> getModelLoader() {
 		return modelLoader;
 	}
 	
