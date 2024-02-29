@@ -222,7 +222,7 @@ public class StatusMonitorWindow extends Window {
 		
 		GroupBox center = new GroupBox();
 		
-		this.im_systemSchematic = new ImageComponent(new ResourceLocation("ln2cs:ui/schematic"), ImageAdjust.STRETCHED);
+		this.im_systemSchematic = new ImageComponent(new ResourceLocation("ln2cs:ui/schematic.png"), ImageAdjust.STRETCHED);
 		this.im_systemSchematic.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.CENTERED));
 		center.addComponent(im_systemSchematic);
 		

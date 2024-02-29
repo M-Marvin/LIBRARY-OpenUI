@@ -1,6 +1,8 @@
 package de.m_marvin.ln2cs;
 
+import de.m_marvin.archiveutility.ArchiveUtility;
 import de.m_marvin.ln2cs.windows.StatusMonitorWindow;
+import de.m_marvin.openui.core.UIResourceFolder;
 import de.m_marvin.serialportaccess.SerialPort;
 import de.m_marvin.simplelogging.printing.Logger;
 
@@ -26,16 +28,17 @@ public class LN2CoolingSystemController {
 	public void start() {
 		
 		Logger.setDefaultLogger(new Logger());
+		UIResourceFolder.addArchive(new ArchiveUtility(LN2CoolingSystemController.class));
 		
 		this.parameterData = new ParameterDataSet();
 
 		this.parameterData.parseData("EVT22\nEVP988\nCDT22\nCDF192\nCMP0\nEXP10\n");
 		
-//		this.serialPort = new SerialPort("COM5");
-//		if (!this.serialPort.openPort()) {
-//			Logger.defaultLogger().logError("Failed to access serial port!");
-//			return;
-//		}
+		this.serialPort = new SerialPort("COM5");
+		if (!this.serialPort.openPort()) {
+			Logger.defaultLogger().logError("Failed to access serial port!");
+			return;
+		}
 		
 		this.statusWindow = new StatusMonitorWindow(this.parameterData);
 		this.statusWindow.start();
@@ -43,10 +46,10 @@ public class LN2CoolingSystemController {
 		while (this.statusWindow.isOpen()) {
 			try { Thread.sleep(1000); } catch (InterruptedException e) {}
 			
-//			String dataString = this.serialPort.readString();
-//			if (this.parameterData.parseData(dataString)) {
-//				this.statusWindow.update();
-//			}
+			String dataString = this.serialPort.readString();
+			if (this.parameterData.parseData(dataString)) {
+				this.statusWindow.update();
+			}
 			
 		}
 		

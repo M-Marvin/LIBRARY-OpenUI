@@ -1,12 +1,33 @@
+import org.gradle.internal.os.OperatingSystem
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
-group = 'com.github.M-Marvin'
-version = '0.1'
+switch (OperatingSystem.current()) {
+	case OperatingSystem.LINUX:
+		project.ext.lwjglNatives = "natives-linux"
+		def osArch = System.getProperty("os.arch")
+		if (osArch.startsWith("arm") || osArch.startsWith("aarch64")) {
+			project.ext.lwjglNatives += osArch.contains("64") || osArch.startsWith("armv8") ? "-arm64" : "-arm32"
+		} else if  (osArch.startsWith("ppc")) {
+			project.ext.lwjglNatives += "-ppc64le"
+		} else if  (osArch.startsWith("riscv")) {
+			project.ext.lwjglNatives += "-riscv64"
+		}
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.lwjglNatives = System.getProperty("os.arch").startsWith("aarch64") ? "natives-macos-arm64" : "natives-macos"
+		break
+	case OperatingSystem.WINDOWS:
+		def osArch = System.getProperty("os.arch")
+		project.ext.lwjglNatives = osArch.contains("64")
+			? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+			: "natives-windows-x86"
+		break
+}
 
-project.ext.lwjglVersion = "3.3.1"
-project.ext.lwjglNatives = "natives-windows"
+group = 'com.github.M-Marvin'
+version = '0.2'
 
 repositories {
 	mavenCentral()
@@ -20,31 +41,16 @@ configurations.all {
 dependencies {
 	
 	// LWJGL
-	//implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
-	//implementation "org.lwjgl:lwjgl"
-	//implementation "org.lwjgl:lwjgl-glfw"
-	//implementation "org.lwjgl:lwjgl-opengl"
 	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
 	// RenderEngine
-	implementation 'com.github.M-Marvin:LIBRARY-RenderEngine:main-SNAPSHOT'
-	
-	// CommandLineParser
-	//implementation 'com.github.M-Marvin:LIBRARY-CommandLineParser:main-SNAPSHOT'
-	
-	// UniVec
-	//implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:main-SNAPSHOT'
-	
-	// GSON
-	//implementation "com.google.code.gson:gson:2.9.1"
-	
-	// SimpleLogging
-	//implementation 'com.github.M-Marvin:LIBRARY-SimpleLogging:main-SNAPSHOT'
+	api 'com.github.M-Marvin:LIBRARY-RenderEngine:main-SNAPSHOT'
 	
 	// ArchiveUtility
-	implementation 'com.github.M-Marvin:LIBRARY-ArchiveUtility:main-SNAPSHOT'
+	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:main-SNAPSHOT'
 	
 	// JBullet (Voxel Engine)
 	testImplementation "cz.advel.jbullet:jbullet:20101010-1"
@@ -74,8 +80,8 @@ wrapper {
 
 jar {
     manifest {
-        attributes 'Implementation-Version': '0.1 - alpha'
-        attributes 'Implementation-Title': 'OpenUI'
+        attributes 'Implementation-Version': version
+        attributes 'Implementation-Title': project.name
         attributes 'Implementation-Vendor-Id': 'de.m_marvin'
     }
 }
