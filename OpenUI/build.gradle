@@ -11,16 +11,19 @@ project.ext.lwjglNatives = "natives-windows"
 repositories {
 	mavenCentral()
 	maven { url 'https://jitpack.io' }
-	flatDir dirs: ["../RenderEngine/build/libs"]
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 dependencies {
 	
 	// LWJGL
-	implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
-	implementation "org.lwjgl:lwjgl"
-	implementation "org.lwjgl:lwjgl-glfw"
-	implementation "org.lwjgl:lwjgl-opengl"
+	//implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+	//implementation "org.lwjgl:lwjgl"
+	//implementation "org.lwjgl:lwjgl-glfw"
+	//implementation "org.lwjgl:lwjgl-opengl"
 	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
@@ -29,25 +32,25 @@ dependencies {
 	implementation 'com.github.M-Marvin:LIBRARY-RenderEngine:main-SNAPSHOT'
 	
 	// CommandLineParser
-	implementation 'com.github.M-Marvin:LIBRARY-CommandLineParser:main-SNAPSHOT'
+	//implementation 'com.github.M-Marvin:LIBRARY-CommandLineParser:main-SNAPSHOT'
 	
 	// UniVec
-	implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:main-SNAPSHOT'
+	//implementation 'com.github.M-Marvin:LIBRARY-UnifiedVectors:main-SNAPSHOT'
+	
+	// GSON
+	//implementation "com.google.code.gson:gson:2.9.1"
+	
+	// SimpleLogging
+	//implementation 'com.github.M-Marvin:LIBRARY-SimpleLogging:main-SNAPSHOT'
 	
 	// ArchiveUtility
 	implementation 'com.github.M-Marvin:LIBRARY-ArchiveUtility:main-SNAPSHOT'
 	
-	// GSON
-	implementation "com.google.code.gson:gson:2.9.1"
-	
-	// SimpleLogging
-	implementation 'com.github.M-Marvin:LIBRARY-SimpleLogging:main-SNAPSHOT'
-	
 	// JBullet (Voxel Engine)
-	implementation "cz.advel.jbullet:jbullet:20101010-1"
+	testImplementation "cz.advel.jbullet:jbullet:20101010-1"
 	
 	// SerialPortAccess (LN2CS)
-	implementation 'com.github.M-Marvin:LIBRARY-SerialPortAccess:bb86ca1ca6'
+	testImplementation 'com.github.M-Marvin:LIBRARY-SerialPortAccess:bb86ca1ca6'
 	
 }
 
