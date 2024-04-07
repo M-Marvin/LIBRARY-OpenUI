@@ -171,7 +171,9 @@ public class TestWindow extends Window {
 		this.getRootComponent().addComponent(b2);
 		this.getRootComponent().addComponent(b3);
 		this.getRootComponent().addComponent(b5);
-		this.autoSetMinSize();
+		this.getRootComponent().autoSetMaxAndMinSize();
+		this.autoSetMinAndMaxSize();
+		this.setAdjustMaxScale(true);
 		
 	}
 	

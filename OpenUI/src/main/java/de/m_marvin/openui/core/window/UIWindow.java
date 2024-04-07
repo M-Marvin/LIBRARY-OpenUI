@@ -1,5 +1,7 @@
 package de.m_marvin.openui.core.window;
 
+import org.lwjgl.glfw.GLFW;
+
 import de.m_marvin.openui.core.UIContainer;
 import de.m_marvin.openui.core.components.Compound;
 import de.m_marvin.renderengine.GLStateManager;
@@ -194,7 +196,6 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		this.uiContainer = new UIContainer<>(this.inputHandler);
 		
 		initUI();
-		autoSetMinSize();
 		this.initialized = true;
 		
 		windowResized(new Vec2i(this.mainWindow.getSize()[0], this.mainWindow.getSize()[1]));
@@ -214,6 +215,10 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		Vec2i minSize = this.uiContainer.calculateMinScreenSize();
 		Vec2i maxSize = this.uiContainer.calculateMaxScreenSize();
 		this.mainWindow.setSizeLimits(minSize.x, minSize.y, maxSize.x, maxSize.y);
+	}
+	
+	protected void resetSizeLimits() {
+		this.mainWindow.setMinSize(GLFW.GLFW_DONT_CARE, GLFW.GLFW_DONT_CARE);
 	}
 	
 	protected void windowResized(Vec2i screenSize) {
