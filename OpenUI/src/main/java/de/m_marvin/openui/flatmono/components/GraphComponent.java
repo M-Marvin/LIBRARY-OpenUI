@@ -160,22 +160,22 @@ public class GraphComponent extends Component<ResourceLocation> {
 	@Override
 	public void drawBackground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		int gw = this.size.x / (this.maxValueX - this.minValueX);
-		int gh = this.size.y / (this.maxValueY - this.minValueY);
+		float gw = this.size.x / (float) (this.maxValueX - this.minValueX);
+		float gh = this.size.y / (float) (this.maxValueY - this.minValueY);
 		Color rc = new Color(this.color.getRed(), this.color.getBlue(), this.color.getGreen(), 128);
 		
 		for (int ix = this.minValueX; ix < this.maxValueX; ix++) {
 			
 			if (ix % this.scalaNumberScaleX != 0) continue;
 			
-			UtilRenderer.renderRectangle((ix - this.minValueX) * gw, 0, ix == 0 ? 2 : 1, this.size.y, ix == 0 ? this.color : rc, bufferSource, matrixStack);
+			UtilRenderer.renderRectangle(Math.round((ix - this.minValueX) * gw), 0, ix == 0 ? 2 : 1, this.size.y, ix == 0 ? this.color : rc, bufferSource, matrixStack);
 			
 		}
 		for (int iy = this.minValueY; iy < this.maxValueY; iy++) {
 
 			if (iy % this.scalaNumberScaleY != 0) continue;
 			
-			UtilRenderer.renderRectangle(0, this.size.y - (iy - this.minValueY) * gh, this.size.x, iy == 0 ? 2 : 1, iy == 0 ? this.color : rc, bufferSource, matrixStack);
+			UtilRenderer.renderRectangle(0, Math.round(this.size.y - (iy - this.minValueY) * gh), this.size.x, iy == 0 ? 2 : 1, iy == 0 ? this.color : rc, bufferSource, matrixStack);
 			
 		}
 		
@@ -209,7 +209,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 		
 		vertexBuffer.end();
 
-		this.shiftRenderLayer();
+		shiftRenderLayer();
 
 		UtilRenderer.renderFrame(this.size.x, this.size.y, 1, this.color, bufferSource, matrixStack);
 		
