@@ -1,8 +1,6 @@
 package de.m_marvin.openui.core.layout;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.stream.Stream;
 
 import de.m_marvin.openui.core.components.Compound;
 import de.m_marvin.renderengine.resources.IResourceProvider;
@@ -18,70 +16,89 @@ public abstract class Layout<T extends Layout.LayoutData> {
 
 	public abstract Class<T> getDataClass();
 	
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public T getData(Compound<?> component) {
-		if (this.getDataClass().isInstance(component.getLayoutData())) return (T) component.getLayoutData();
-		try {
-			T defaultData = (T) getDataClass().getConstructor().newInstance();
-			component.setLayoutData(defaultData);
-			return defaultData;
-		} catch (InstantiationException | IllegalAccessException 
-				| IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			System.err.println("Failed to instanziate the default layout-data of the " + getDataClass().getName() + " class!");
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	// TODO Rework: Let small objects reach max size first (scale all objects with same step size)
 	public static int[] fitSizes(int totalSize, int[] ... sizeMinAndMax)  {
+
 		int min = 0, max = 0;
+		int[] variations = new int[sizeMinAndMax.length];
 		for (int i = 0; i < sizeMinAndMax.length; i++) {
-			min += sizeMinAndMax[i][0];
-			max += sizeMinAndMax[i][1];
+			if (sizeMinAndMax[i] == null) {
+				variations[i] = 0;
+				continue;
+			}
+			variations[i] = sizeMinAndMax[i][1] == -1 ? -1 : sizeMinAndMax[i][1] - (sizeMinAndMax[i][0] >= 0 ? sizeMinAndMax[i][0] : 0);
+			min += Math.max(sizeMinAndMax[i][0], 0);
+			max += Math.max(sizeMinAndMax[i][1], Math.max(sizeMinAndMax[i][0], 0));
 		}
-		if (min == max) return Stream.of(sizeMinAndMax).mapToInt(s -> s[0]).toArray();
-		float f = max == min ? 1 : (totalSize - min) / (float) (max - min);
-		int[] sizes = new int[sizeMinAndMax.length];
+		
+		float variationFactor = max > 0 && min < max ? Math.min((totalSize - min) / (float) (max - min), 1.0F) : 1.0F;
+		
+		int[] sizes = new int[variations.length];
+		int totalSetSize = 0;
+		int numNonSet = 0;
+		for (int i = 0; i < variations.length; i++) {
+			if (sizeMinAndMax[i] == null) {
+				sizes[i] = 0;
+			} else if (variations[i] >= 0) {
+				sizes[i] = Math.round(variations[i] * variationFactor + sizeMinAndMax[i][0]);
+				totalSetSize += sizes[i];
+			} else {
+				sizes[i] = -1;
+				totalSetSize += Math.max(sizeMinAndMax[i][0], 0);
+				numNonSet++;
+			}
+		}
+		
+		int sizeRemaining = Math.max(totalSize - totalSetSize, 0);
+		
 		for (int i = 0; i < sizes.length; i++) {
-			sizes[i] = (int) (sizeMinAndMax[i][0] + (sizeMinAndMax[i][1] - sizeMinAndMax[i][0]) * f);
+			if (sizes[i] == -1) {
+				sizes[i] = sizeMinAndMax[i][0] + Math.round(sizeRemaining / (float) numNonSet);
+			}
 		}
+		
 		return sizes;
 	}
 	
 	public static int[] widthMinMax(Compound<?> component) {
-		return component == null ? new int[] {0, 0} : new int[] {component.getSizeMinMargin().x, component.getSizeMaxMargin().x};
+		return component == null ? null : new int[] {component.getSizeMinMargin().x, component.getSizeMaxMargin().x};
 	}
 
 	public static int[] heightMinMax(Compound<?> component) {
-		return component == null ? new int[] {0, 0} : new int[] {component.getSizeMinMargin().y, component.getSizeMaxMargin().y};
+		return component == null ? null : new int[] {component.getSizeMinMargin().y, component.getSizeMaxMargin().y};
 	}
 	
 	public static int[] totalMinAndMax(int[] ... sizeMinAndMax) {
-		if (sizeMinAndMax.length == 0) return new int[] {0, 0};
-		int min = sizeMinAndMax[0][0];
-		int max = sizeMinAndMax[0][1];
+		if (sizeMinAndMax.length == 0) return null;
+		int min = -2;
+		int max = -2;
 		for (int i = 0; i < sizeMinAndMax.length; i++) {
+			if (sizeMinAndMax[i] == null) continue;
 			if (sizeMinAndMax[i][0] > min) min = sizeMinAndMax[i][0];
-			if ((sizeMinAndMax[i][1] < max || max == 0) && sizeMinAndMax[i][1] != 0) max = sizeMinAndMax[i][1];
+			if ((sizeMinAndMax[i][1] < max || max <= -1) && (sizeMinAndMax[i][1] >= 0 || max < -1)) max = sizeMinAndMax[i][1];
 		}
-		if (min > max && max != 0) return new int[] {min, min};
+		if (min < -1 || max < -1) return null;
+		if (min > max && max != -1) return new int[] {min, min};
 		return new int[] {min, max};
 	}
 	
 	public static int minSizeRequired(int[]... sizeMinAndMax) {
-		if (sizeMinAndMax.length == 0) return 0;
-		int min = 0;
-		for (int[] minAndMax : sizeMinAndMax) min += minAndMax[0];
+		if (sizeMinAndMax.length == 0) return -1;
+		int min = -1;
+		for (int[] minAndMax : sizeMinAndMax) {
+			if (minAndMax == null) continue;
+			if (minAndMax[0] != -1) min += minAndMax[0];
+		}
 		return min;
 	}
 
 	public static int maxSizeRequired(int[]... sizeMinAndMax) {
-		if (sizeMinAndMax.length == 0) return 0;
-		int max = 0;
-		for (int[] minAndMax : sizeMinAndMax) max += minAndMax[1];
+		if (sizeMinAndMax.length == 0) return -1;
+		int max = -1;
+		for (int[] minAndMax : sizeMinAndMax) {
+			if (minAndMax == null) continue;
+			if (minAndMax[1] == -1) return -1;
+			max += minAndMax[1];
+		}
 		return max;
 	}
 	

@@ -214,8 +214,10 @@ public class GraphComponent extends Component<ResourceLocation> {
 		UtilRenderer.renderFrame(this.size.x, this.size.y, 1, this.color, bufferSource, matrixStack);
 		
 		if (this.showDigits) {
-			int gw = this.size.x / (this.maxValueX - this.minValueX);
-			int gh = this.size.y / (this.maxValueY - this.minValueY);
+			
+
+			float gw = this.size.x / (float) (this.maxValueX - this.minValueX);
+			float gh = this.size.y / (float) (this.maxValueY - this.minValueY);
 			int th = FontRenderer.getFontHeight(this.font);
 			
 			for (int ix = this.minValueX; ix < this.maxValueX; ix++) {
@@ -225,7 +227,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 				if (ix > this.minValueX) {
 					String text = String.valueOf(ix);
 					int tw = FontRenderer.calculateStringWidth(text, this.font);
-					TextRenderer.renderTextCentered((ix - this.minValueX) * gw - tw / 2, this.size.y - th / 2 - 5, text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+					TextRenderer.renderTextCentered(Math.round((ix - this.minValueX) * gw - tw / 2), this.size.y - th / 2 - 5, text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 				}
 				
 			}
@@ -236,7 +238,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 				if (iy > this.minValueY) {
 					String text = String.valueOf(iy);
 					int tw = FontRenderer.calculateStringWidth(text, this.font);
-					TextRenderer.renderTextCentered(tw / 2 + 5, this.size.y - (iy - this.minValueY) * gh - th / 2, text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+					TextRenderer.renderTextCentered(tw / 2 + 5, Math.round(this.size.y - (iy - this.minValueY) * gh - th / 2), text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 				}
 				
 			}

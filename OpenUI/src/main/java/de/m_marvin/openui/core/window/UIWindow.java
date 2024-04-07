@@ -214,6 +214,11 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 	protected void autoSetMinAndMaxSize() {
 		Vec2i minSize = this.uiContainer.calculateMinScreenSize();
 		Vec2i maxSize = this.uiContainer.calculateMaxScreenSize();
+		/* some platforms seem to don't handle it well if only one of the upper size limits is DONT_CARE */
+		if (minSize.x == -1 && minSize.y != -1) minSize.x = 0;
+		if (minSize.y == -1 && minSize.x != -1) minSize.y = 0;
+		if (maxSize.x == -1 && maxSize.y != -1) maxSize.x = 1000000;
+		if (maxSize.y == -1 && maxSize.x != -1) maxSize.y = 1000000;
 		this.mainWindow.setSizeLimits(minSize.x, minSize.y, maxSize.x, maxSize.y);
 	}
 	

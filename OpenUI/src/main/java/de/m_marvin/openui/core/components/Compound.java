@@ -91,7 +91,7 @@ public class Compound<R extends IResourceProvider<R>> {
 	}
 	
 	public boolean isVisible() {
-		return visible;
+		return visible && this.size.x > 0 && this.size.y > 0;
 	}
 	
 	public void setup() {}
@@ -198,7 +198,7 @@ public class Compound<R extends IResourceProvider<R>> {
 	}
 	
 	public void setSize(Vec2i size) {
-		this.size = size;
+		this.size = size.max(new Vec2i(0, 0));
 	}
 
 	public void setSizeMargin(Vec2i size) {
@@ -258,14 +258,22 @@ public class Compound<R extends IResourceProvider<R>> {
 		}
 		return maxSize;
 	}
-	
+
+	public void resetMinSize() {
+		this.setSizeMin(new Vec2i(-1, -1));
+	}
+		
 	public void autoSetMinSize() {
-		this.setSizeMin(new Vec2i());
+		this.resetMinSize();
 		this.setSizeMin(calculateMinSize());
 	}
-
+	
+	public void resetMaxSize() {
+		this.setSizeMax(new Vec2i(-1, -1));
+	}
+	
 	public void autoSetMaxSize() {
-		this.setSizeMax(new Vec2i());
+		this.resetMaxSize();
 		this.setSizeMax(calculateMaxSize());
 	}
 	
@@ -274,8 +282,13 @@ public class Compound<R extends IResourceProvider<R>> {
 		autoSetMaxSize();
 	}
 	
+	public void resetSizeLimits() {
+		this.resetMinSize();
+		this.resetMaxSize();
+	}
+	
 	public void render(SimpleBufferSource<R, UIRenderMode<R>> bufferSource, PoseStack matrixStack) {
-		if (this.visible) {
+		if (isVisible()) {
 			drawBackground(bufferSource, matrixStack);
 			shiftRenderLayer();
 			drawForeground(bufferSource, matrixStack);
