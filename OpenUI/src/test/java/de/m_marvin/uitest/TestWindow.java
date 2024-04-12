@@ -15,6 +15,7 @@ import de.m_marvin.openui.flatmono.components.GroupBox;
 import de.m_marvin.openui.flatmono.components.TextFieldComponent;
 import de.m_marvin.openui.flatmono.components.ToggleButtonComponent;
 import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
+import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2i;
 
 public class TestWindow extends Window {
@@ -48,11 +49,11 @@ public class TestWindow extends Window {
 		GroupBox center = new GroupBox();
 		center.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.CENTERED));
 		center.setLayout(new BorderLayout());
-		
-		this.gr_readings = new GraphComponent(0, 100, 100, -200);
+
+		this.gr_readings = new GraphComponent(0, 100, -4700, 4700);
+		this.gr_readings.setScalaNumberScaleY(500);
 		this.gr_readings.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.CENTERED));
-		this.gr_readings.setSizeMin(new Vec2i(-1, -1));
-		this.gr_readings.setSizeMax(new Vec2i(-1, -1));
+		this.gr_readings.resetSizeLimits();
 		center.addComponent(gr_readings);
 		
 		this.graphs = new Graph[CHANNELS];
@@ -60,7 +61,13 @@ public class TestWindow extends Window {
 			this.graphs[i] = new Graph("CHN " + (i + 1), Color.RED);
 			this.gr_readings.addGraph(this.graphs[i]);
 		}
-
+		
+		for (int i1 = 0; i1 < 10; i1++) {
+			for (int i = 0; i < CHANNELS; i++) {
+				this.graphs[i].getDataPoints().addLast(new Vec2d(i1 * 10, 0));
+			}
+		}
+		
 		center.setSizeMax(new Vec2i(-1, -1));
 		center.autoSetMinSize();
 		bg.addComponent(center);

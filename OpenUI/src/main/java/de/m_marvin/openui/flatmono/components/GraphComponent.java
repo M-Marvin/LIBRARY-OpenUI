@@ -186,7 +186,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 		
 		BufferBuilder vertexBuffer = bufferSource.startBuffer(UIRenderModes.lines(2));
 
-		Vec2i mult = new Vec2i(this.size.x / (this.maxValueX - this.minValueX), -this.size.y / (this.maxValueY - this.minValueY));
+		Vec2f mult = new Vec2f(this.size.x / (float) (this.maxValueX - this.minValueX), -this.size.y / (float) (this.maxValueY - this.minValueY));
 		
 		for (Graph graph : this.graphs) {
 			
@@ -251,7 +251,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 			if (graph.getDataPoints().isEmpty()) continue;
 			Vec2d end = graph.getDataPoints().getLast();
 			
-			Vec2i pos = new Vec2i(end).sub(new Vec2i(this.minValueX, this.minValueY)).mul(mult).add(0, this.size.y).clamp(new Vec2i(0, 0), this.size);
+			Vec2f pos = new Vec2f(end).sub(new Vec2f(this.minValueX, this.minValueY)).mul(mult).add(0.0F, (float) this.size.y).clamp(new Vec2f(0, 0), this.size);
 			int xo = FontRenderer.calculateStringWidth(graph.title, this.font) / 2 + 5;
 			TextRenderer.renderTextCentered((int) pos.x - xo, (int) pos.y, graph.title, this.font, graph.color, this.getContainer().getActiveTextureLoader(), bufferSource, matrixStack);			
 			
