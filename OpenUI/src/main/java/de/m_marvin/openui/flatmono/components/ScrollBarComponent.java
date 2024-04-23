@@ -24,7 +24,7 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 	protected int barSize;
 	protected int scrollLength;
 	protected boolean horizontal;
-	protected int barPosition = 0;
+	protected double barPosition = 0;
 	protected int scrollSensitivity = 10;
 	protected Consumer<Integer> changeCallback = i -> {};
 	
@@ -92,10 +92,11 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 	}
 	
 	public int getBarPosition() {
-		return barPosition;
+		return (int) Math.round(barPosition);
 	}
 	
 	public void setBarPosition(int barPosition) {
+		if (getBarPosition() == barPosition) return;
 		this.barPosition = Math.max(0, Math.min(this.scrollLength - this.barSize, barPosition));
 		this.redraw();
 	}
@@ -135,7 +136,7 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 						this.grabOffset = barSize / 2;
 						this.barPosition = (int) (((grabPos - this.grabOffset) / (float) (this.size.y - barSize)) * (this.scrollLength - this.barSize));
 						this.barPosition = Math.min(this.scrollLength - this.barSize, Math.max(0, this.barPosition));
-						this.changeCallback.accept(this.barPosition);
+						this.changeCallback.accept(getBarPosition());
 					}
 					
 				} else {
@@ -150,7 +151,7 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 						this.grabOffset = barSize / 2;
 						this.barPosition = (int) (((grabPos - this.grabOffset) / (float) (this.size.x - barSize)) * (this.scrollLength - this.barSize));
 						this.barPosition = Math.min(this.scrollLength - this.barSize, Math.max(0, this.barPosition));
-						this.changeCallback.accept(this.barPosition);
+						this.changeCallback.accept(getBarPosition());
 					}
 					
 				}
@@ -168,13 +169,13 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 	protected void onScroll(Vec2d scroll) {
 		
 		if (!this.horizontal) {
-			this.barPosition = (int) Math.max(0, Math.min(this.scrollLength - this.barSize, this.barPosition - scroll.y * this.scrollSensitivity));
+			this.barPosition = Math.max(0, Math.min(this.scrollLength - this.barSize, this.barPosition - scroll.y * this.scrollSensitivity));
 		} else {
-			this.barPosition = (int) Math.max(0, Math.min(this.scrollLength - this.barSize, this.barPosition - scroll.y * this.scrollSensitivity));
+			this.barPosition = Math.max(0, Math.min(this.scrollLength - this.barSize, this.barPosition - scroll.y * this.scrollSensitivity));
 		}
 
 		this.redraw();
-		this.changeCallback.accept(this.barPosition);
+		this.changeCallback.accept(getBarPosition());
 		
 	}
 	
@@ -191,7 +192,7 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 				
 				this.barPosition = (int) (((grabPos - this.grabOffset) / (float) (this.size.y - barSize)) * (this.scrollLength - this.barSize));
 				this.barPosition = Math.min(this.scrollLength - this.barSize, Math.max(0, this.barPosition));
-				this.changeCallback.accept(this.barPosition);
+				this.changeCallback.accept(getBarPosition());
 				this.redraw();
 				
 			} else {
@@ -201,7 +202,7 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 				
 				this.barPosition = (int) (((grabPos - this.grabOffset) / (float) (this.size.x - barSize)) * (this.scrollLength - this.barSize));
 				this.barPosition = Math.min(this.scrollLength - this.barSize, Math.max(0, this.barPosition));
-				this.changeCallback.accept(this.barPosition);
+				this.changeCallback.accept(getBarPosition());
 				this.redraw();
 				
 			}
