@@ -44,7 +44,6 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
-	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
 	// RenderEngine
 	api 'com.github.M-Marvin:LIBRARY-RenderEngine:main-SNAPSHOT'
@@ -56,7 +55,7 @@ dependencies {
 	testImplementation "cz.advel.jbullet:jbullet:20101010-1"
 	
 	// SerialPortAccess (LN2CS)
-	testImplementation 'com.github.M-Marvin:LIBRARY-SerialPortAccess:bb86ca1ca6'
+	testImplementation 'com.github.M-Marvin:LIBRARY-SerialPortAccess:main-SNAPSHOT'
 	
 }
 

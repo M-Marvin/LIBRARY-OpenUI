@@ -49,8 +49,8 @@ public class GridLayout extends Layout<GridLayout.GridLayoutData> {
 	public <R extends IResourceProvider<R>> void rearange(Compound<R> compound, List<Compound<R>> childComponents) {
 		
 		Vec2i gridSize = new Vec2i(
-				childComponents.stream().mapToInt(c -> c.getLayoutData(this).column	).max().getAsInt() + 1,
-				childComponents.stream().mapToInt(c -> c.getLayoutData(this).row	).max().getAsInt() + 1
+				childComponents.stream().mapToInt(c -> c.getLayoutData(this).column	).max().orElseGet(() -> 0) + 1,
+				childComponents.stream().mapToInt(c -> c.getLayoutData(this).row	).max().orElseGet(() -> 0) + 1
 		);
 		
 		int[][] widthsMinMax = IntStream
