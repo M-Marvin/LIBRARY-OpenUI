@@ -10,7 +10,7 @@ import de.m_marvin.renderengine.resources.IResourceProvider;
 import de.m_marvin.renderengine.resources.ISourceFolder;
 import de.m_marvin.renderengine.resources.ResourceLoader;
 import de.m_marvin.renderengine.shaders.ShaderLoader;
-import de.m_marvin.renderengine.textures.utility.TextureLoader;
+import de.m_marvin.renderengine.textures.TextureLoader;
 import de.m_marvin.renderengine.windows.Window;
 import de.m_marvin.renderengine.windows.Window.WindowEventType;
 import de.m_marvin.simplelogging.printing.Logger;

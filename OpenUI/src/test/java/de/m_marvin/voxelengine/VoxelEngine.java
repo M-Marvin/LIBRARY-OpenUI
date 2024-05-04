@@ -14,7 +14,7 @@ import de.m_marvin.renderengine.resources.FileUtility;
 import de.m_marvin.renderengine.resources.ResourceLoader;
 import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
 import de.m_marvin.renderengine.shaders.ShaderLoader;
-import de.m_marvin.renderengine.textures.utility.TextureLoader;
+import de.m_marvin.renderengine.textures.TextureLoader;
 import de.m_marvin.renderengine.translation.Camera;
 import de.m_marvin.renderengine.windows.Window;
 import de.m_marvin.simplelogging.filehandling.LogFileHandler;

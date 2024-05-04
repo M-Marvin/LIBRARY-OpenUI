@@ -2,7 +2,7 @@ package de.m_marvin.openui.core;
 
 import de.m_marvin.renderengine.resources.IResourceProvider;
 import de.m_marvin.renderengine.resources.ISourceFolder;
-import de.m_marvin.renderengine.textures.utility.TextureLoader;
+import de.m_marvin.renderengine.textures.TextureLoader;
 
 public class UITextureHandler {
 	

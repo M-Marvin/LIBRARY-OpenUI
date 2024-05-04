@@ -10,7 +10,7 @@ import de.m_marvin.renderengine.buffers.BufferUsage;
 import de.m_marvin.renderengine.buffers.VertexBuffer;
 import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
 import de.m_marvin.renderengine.shaders.ShaderInstance;
-import de.m_marvin.renderengine.textures.AbstractTextureMap;
+import de.m_marvin.renderengine.textures.maps.AbstractTextureMap;
 import de.m_marvin.renderengine.translation.PoseStack;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.unimat.impl.Quaternionf;

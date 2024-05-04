@@ -18,7 +18,7 @@ import de.m_marvin.renderengine.resources.IResourceProvider;
 import de.m_marvin.renderengine.resources.ISourceFolder;
 import de.m_marvin.renderengine.shaders.ShaderInstance;
 import de.m_marvin.renderengine.shaders.ShaderLoader;
-import de.m_marvin.renderengine.textures.utility.TextureLoader;
+import de.m_marvin.renderengine.textures.TextureLoader;
 import de.m_marvin.renderengine.translation.PoseStack;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.univec.impl.Vec2f;
