@@ -38,6 +38,12 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
+java {
+	sourceCompatibility = "1.17"
+	targetCompatibility = "1.17"
+    withSourcesJar()
+}
+
 dependencies {
 	
 	// LWJGL
@@ -49,7 +55,7 @@ dependencies {
 	api 'com.github.M-Marvin:LIBRARY-RenderEngine:main-SNAPSHOT'
 	
 	// ArchiveUtility
-	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:main-SNAPSHOT'
+	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:v2.0'
 	
 	// JBullet (Voxel Engine)
 	testImplementation "cz.advel.jbullet:jbullet:20101010-1"
@@ -57,10 +63,6 @@ dependencies {
 	// SerialPortAccess (LN2CS)
 	testImplementation 'com.github.M-Marvin:LIBRARY-SerialPortAccess:main-SNAPSHOT'
 	
-}
-
-java {
-    withSourcesJar()
 }
 
 publishing {
