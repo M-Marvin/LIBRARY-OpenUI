@@ -10,7 +10,4 @@ public abstract class ScreenBase extends ScreenUI {
 		super(size, aligment);
 	}
 	
-	
-	// TODO Currently not used, just a base class of all ui's
-	
 }

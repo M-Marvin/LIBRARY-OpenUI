@@ -3,31 +3,11 @@ import org.gradle.internal.os.OperatingSystem
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
-switch (OperatingSystem.current()) {
-	case OperatingSystem.LINUX:
-		project.ext.lwjglNatives = "natives-linux"
-		def osArch = System.getProperty("os.arch")
-		if (osArch.startsWith("arm") || osArch.startsWith("aarch64")) {
-			project.ext.lwjglNatives += osArch.contains("64") || osArch.startsWith("armv8") ? "-arm64" : "-arm32"
-		} else if  (osArch.startsWith("ppc")) {
-			project.ext.lwjglNatives += "-ppc64le"
-		} else if  (osArch.startsWith("riscv")) {
-			project.ext.lwjglNatives += "-riscv64"
-		}
-		break
-	case OperatingSystem.MAC_OS:
-		project.ext.lwjglNatives = System.getProperty("os.arch").startsWith("aarch64") ? "natives-macos-arm64" : "natives-macos"
-		break
-	case OperatingSystem.WINDOWS:
-		def osArch = System.getProperty("os.arch")
-		project.ext.lwjglNatives = osArch.contains("64")
-			? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
-			: "natives-windows-x86"
-		break
-}
+project.ext.lwjglVersion = "3.3.3"
+project.ext.lwjglNatives = "natives-windows"
 
 group = 'com.github.M-Marvin'
-version = '0.2'
+version = '1.0'
 
 repositories {
 	mavenCentral()
@@ -49,13 +29,13 @@ dependencies {
 	// LWJGL
 	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-	runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
 	// RenderEngine
-	api 'com.github.M-Marvin:LIBRARY-RenderEngine:main-SNAPSHOT'
+	api 'com.github.M-Marvin:LIBRARY-GraphicsFramework:v1.0'
 	
 	// ArchiveUtility
-	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:v2.0'
+	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:v2.1'
 	
 	// JBullet (Voxel Engine)
 	testImplementation "cz.advel.jbullet:jbullet:20101010-1"

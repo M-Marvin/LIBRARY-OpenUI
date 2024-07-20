@@ -4,13 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.m_marvin.gframe.buffers.defimpl.SimpleBufferSource;
+import de.m_marvin.gframe.resources.IResourceProvider;
+import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.openui.core.UIContainer;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.layout.Layout;
 import de.m_marvin.openui.core.layout.Layout.LayoutData;
-import de.m_marvin.renderengine.buffers.defimpl.SimpleBufferSource;
-import de.m_marvin.renderengine.resources.IResourceProvider;
-import de.m_marvin.renderengine.translation.PoseStack;
 import de.m_marvin.univec.impl.Vec2i;
 
 public class Compound<R extends IResourceProvider<R>> {

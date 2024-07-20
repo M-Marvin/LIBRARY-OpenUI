@@ -8,16 +8,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import de.m_marvin.gframe.buffers.BufferBuilder;
+import de.m_marvin.gframe.buffers.defimpl.SimpleBufferSource;
+import de.m_marvin.gframe.fontrendering.FontRenderer;
+import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
+import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.openui.core.TextRenderer;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.flatmono.UIRenderModes;
 import de.m_marvin.openui.flatmono.UtilRenderer;
-import de.m_marvin.renderengine.buffers.BufferBuilder;
-import de.m_marvin.renderengine.buffers.defimpl.SimpleBufferSource;
-import de.m_marvin.renderengine.fontrendering.FontRenderer;
-import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
-import de.m_marvin.renderengine.translation.PoseStack;
 import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
@@ -148,12 +148,16 @@ public class GraphComponent extends Component<ResourceLocation> {
 	}
 	
 	public void addGraph(Graph graph) {
-		this.graphs.add(graph);
+		synchronized (this.graphs) {
+			this.graphs.add(graph);
+		}
 		this.redraw();
 	}
 	
 	public void removeGraph(Graph graph) {
-		this.graphs.remove(graph);
+		synchronized (this.graphs) {
+			this.graphs.remove(graph);
+		}
 		this.redraw();
 	}
 	
@@ -188,21 +192,25 @@ public class GraphComponent extends Component<ResourceLocation> {
 
 		Vec2f mult = new Vec2f(this.size.x / (float) (this.maxValueX - this.minValueX), -this.size.y / (float) (this.maxValueY - this.minValueY));
 		
-		for (Graph graph : this.graphs) {
-			
-			List<Vec2d> points = graph.dataPoints.stream().toList(); // TODO Concurent Exception
-			
-			float r = graph.color.getRed() / 255F;
-			float g = graph.color.getGreen() / 255F;
-			float b = graph.color.getBlue() / 255F;
-			float a = graph.color.getAlpha() / 255F;
-			
-			for (int i = 1; i < points.size(); i++) {
-				Vec2f p1 = new Vec2f(points.get(i - 1)).sub(new Vec2f(this.minValueX, this.minValueY)).mul(mult).add(0.0F, (float) this.size.y).clamp(new Vec2f(0, 0), this.size);
-				Vec2f p2 = new Vec2f(points.get(i)).sub(new Vec2f(this.minValueX, this.minValueY)).mul(mult).add(0.0F, (float) this.size.y).clamp(new Vec2f(0, 0), this.size);
+		synchronized (this.graphs) {
+
+			for (Graph graph : this.graphs) {
 				
-				vertexBuffer.vertex(matrixStack, p1.x, p1.y, 0).color(r, g, b, a).endVertex();
-				vertexBuffer.vertex(matrixStack, p2.x, p2.y, 0).color(r, g, b, a).endVertex();
+				List<Vec2d> points = graph.dataPoints.stream().toList();
+				
+				float r = graph.color.getRed() / 255F;
+				float g = graph.color.getGreen() / 255F;
+				float b = graph.color.getBlue() / 255F;
+				float a = graph.color.getAlpha() / 255F;
+				
+				for (int i = 1; i < points.size(); i++) {
+					Vec2f p1 = new Vec2f(points.get(i - 1)).sub(new Vec2f(this.minValueX, this.minValueY)).mul(mult).add(0.0F, (float) this.size.y).clamp(new Vec2f(0, 0), this.size);
+					Vec2f p2 = new Vec2f(points.get(i)).sub(new Vec2f(this.minValueX, this.minValueY)).mul(mult).add(0.0F, (float) this.size.y).clamp(new Vec2f(0, 0), this.size);
+					
+					vertexBuffer.vertex(matrixStack, p1.x, p1.y, 0).color(r, g, b, a).endVertex();
+					vertexBuffer.vertex(matrixStack, p2.x, p2.y, 0).color(r, g, b, a).endVertex();
+				}
+				
 			}
 			
 		}

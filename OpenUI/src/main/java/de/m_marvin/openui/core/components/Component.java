@@ -3,7 +3,7 @@ package de.m_marvin.openui.core.components;
 import java.awt.Font;
 import java.util.Optional;
 
-import de.m_marvin.renderengine.resources.IResourceProvider;
+import de.m_marvin.gframe.resources.IResourceProvider;
 import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2i;
 

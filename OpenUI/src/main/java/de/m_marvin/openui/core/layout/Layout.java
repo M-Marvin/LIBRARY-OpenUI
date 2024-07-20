@@ -2,8 +2,8 @@ package de.m_marvin.openui.core.layout;
 
 import java.util.List;
 
+import de.m_marvin.gframe.resources.IResourceProvider;
 import de.m_marvin.openui.core.components.Compound;
-import de.m_marvin.renderengine.resources.IResourceProvider;
 import de.m_marvin.univec.impl.Vec2i;
 
 public abstract class Layout<T extends Layout.LayoutData> {

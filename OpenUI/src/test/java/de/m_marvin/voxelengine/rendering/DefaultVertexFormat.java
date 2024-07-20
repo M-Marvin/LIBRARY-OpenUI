@@ -1,7 +1,7 @@
 package de.m_marvin.voxelengine.rendering;
 
-import de.m_marvin.renderengine.utility.NumberFormat;
-import de.m_marvin.renderengine.vertices.VertexFormat;
+import de.m_marvin.gframe.utility.NumberFormat;
+import de.m_marvin.gframe.vertices.VertexFormat;
 
 public class DefaultVertexFormat {
 	

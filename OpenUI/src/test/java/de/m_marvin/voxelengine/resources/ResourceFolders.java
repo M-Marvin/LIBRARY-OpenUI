@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-import de.m_marvin.renderengine.resources.ISourceFolder;
-import de.m_marvin.renderengine.resources.ResourceLoader;
+import de.m_marvin.gframe.resources.ISourceFolder;
+import de.m_marvin.gframe.resources.ResourceLoader;
 
 public enum ResourceFolders implements ISourceFolder {
 	

@@ -3,7 +3,7 @@ package de.m_marvin.voxelengine.world;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.linearmath.Transform;
 
-import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
+import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.voxelengine.physicengine.d3.physic.IRigidObject;

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import de.m_marvin.renderengine.buffers.BufferBuilder;
-import de.m_marvin.renderengine.buffers.IBufferSource;
+import de.m_marvin.gframe.buffers.BufferBuilder;
+import de.m_marvin.gframe.buffers.IBufferSource;
 
 public class BufferSource implements IBufferSource<RenderType> {
 	

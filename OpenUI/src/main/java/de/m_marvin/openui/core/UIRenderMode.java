@@ -1,10 +1,10 @@
 package de.m_marvin.openui.core;
 
-import de.m_marvin.renderengine.buffers.defimpl.IRenderMode;
-import de.m_marvin.renderengine.resources.IResourceProvider;
-import de.m_marvin.renderengine.shaders.ShaderInstance;
-import de.m_marvin.renderengine.vertices.RenderPrimitive;
-import de.m_marvin.renderengine.vertices.VertexFormat;
+import de.m_marvin.gframe.buffers.defimpl.IRenderMode;
+import de.m_marvin.gframe.resources.IResourceProvider;
+import de.m_marvin.gframe.shaders.ShaderInstance;
+import de.m_marvin.gframe.vertices.RenderPrimitive;
+import de.m_marvin.gframe.vertices.VertexFormat;
 
 public record UIRenderMode<R extends IResourceProvider<R>>(
 		RenderPrimitive primitive, 

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.m_marvin.renderengine.buffers.BufferBuilder;
-import de.m_marvin.renderengine.inputbinding.UserInput;
-import de.m_marvin.renderengine.inputbinding.UserInput.FunctionalKey;
-import de.m_marvin.renderengine.translation.PoseStack;
+import de.m_marvin.gframe.buffers.BufferBuilder;
+import de.m_marvin.gframe.inputbinding.UserInput;
+import de.m_marvin.gframe.inputbinding.UserInput.FunctionalKey;
+import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;

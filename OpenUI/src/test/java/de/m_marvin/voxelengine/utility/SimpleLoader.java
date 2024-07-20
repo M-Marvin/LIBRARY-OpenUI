@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.m_marvin.renderengine.resources.IClearableLoader;
-import de.m_marvin.renderengine.resources.IResourceProvider;
-import de.m_marvin.renderengine.resources.ISourceFolder;
-import de.m_marvin.renderengine.resources.ResourceLoader;
+import de.m_marvin.gframe.resources.IClearableLoader;
+import de.m_marvin.gframe.resources.IResourceProvider;
+import de.m_marvin.gframe.resources.ISourceFolder;
+import de.m_marvin.gframe.resources.ResourceLoader;
 import de.m_marvin.simplelogging.printing.LogType;
 import de.m_marvin.simplelogging.printing.Logger;
 

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import de.m_marvin.renderengine.buffers.VertexBuffer;
+import de.m_marvin.gframe.buffers.VertexBuffer;
 import de.m_marvin.voxelengine.world.VoxelStructure;
 
 public class LevelRender {

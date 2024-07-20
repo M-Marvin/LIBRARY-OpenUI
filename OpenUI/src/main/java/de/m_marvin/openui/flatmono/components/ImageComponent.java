@@ -2,12 +2,12 @@ package de.m_marvin.openui.flatmono.components;
 
 import java.awt.Color;
 
+import de.m_marvin.gframe.buffers.defimpl.SimpleBufferSource;
+import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
+import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.flatmono.UtilRenderer;
-import de.m_marvin.renderengine.buffers.defimpl.SimpleBufferSource;
-import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
-import de.m_marvin.renderengine.translation.PoseStack;
 
 public class ImageComponent extends Component<ResourceLocation> {
 	
@@ -90,8 +90,6 @@ public class ImageComponent extends Component<ResourceLocation> {
 	@Override
 	public void drawForeground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
-		// TODO Adjustment
-		
 		UtilRenderer.renderTexture(this.size.x, this.size.y, this.imageLocation, this.color, bufferSource, matrixStack);
 		
 	}

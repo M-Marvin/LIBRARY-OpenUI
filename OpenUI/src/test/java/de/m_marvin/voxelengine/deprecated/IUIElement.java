@@ -1,6 +1,6 @@
 package de.m_marvin.voxelengine.deprecated;
 
-import de.m_marvin.renderengine.translation.PoseStack;
+import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.univec.impl.Vec2i;
 
 public interface IUIElement {

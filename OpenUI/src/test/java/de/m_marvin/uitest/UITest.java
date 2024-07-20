@@ -3,7 +3,7 @@ package de.m_marvin.uitest;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
+import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
 import de.m_marvin.simplelogging.printing.Logger;
 
 public class UITest {
@@ -18,13 +18,8 @@ public class UITest {
 		
 		TestWindow window = new TestWindow();
 		
-		/** TODO
-		 * - Minimize/Maximize methods
-		 * - Show/Hide methods (if possible)
-		 * - 
-		 */
-		
 		window.start();
+		window.maximize();
 		
 		while (window.isOpen()) {
 			Thread.sleep(1000);

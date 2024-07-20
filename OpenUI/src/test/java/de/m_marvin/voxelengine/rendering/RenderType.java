@@ -6,10 +6,10 @@ import java.util.function.Function;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33;
 
-import de.m_marvin.renderengine.GLStateManager;
-import de.m_marvin.renderengine.resources.defimpl.ResourceLocation;
-import de.m_marvin.renderengine.vertices.RenderPrimitive;
-import de.m_marvin.renderengine.vertices.VertexFormat;
+import de.m_marvin.gframe.GLStateManager;
+import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
+import de.m_marvin.gframe.vertices.RenderPrimitive;
+import de.m_marvin.gframe.vertices.VertexFormat;
 import de.m_marvin.voxelengine.Utility;
 
 public abstract class RenderType {

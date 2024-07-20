@@ -5,8 +5,9 @@ import java.io.InputStream;
 
 import de.m_marvin.archiveutility.ArchiveAccess;
 import de.m_marvin.archiveutility.IArchiveAccess;
-import de.m_marvin.renderengine.resources.ISourceFolder;
-import de.m_marvin.renderengine.resources.ResourceLoader;
+import de.m_marvin.archiveutility.access.MultiArchiveAccess;
+import de.m_marvin.gframe.resources.ISourceFolder;
+import de.m_marvin.gframe.resources.ResourceLoader;
 import de.m_marvin.simplelogging.printing.Logger;
 
 public class UIResourceFolder implements ISourceFolder {
@@ -33,6 +34,10 @@ public class UIResourceFolder implements ISourceFolder {
 	
 	public static void setArchiveAccess(IArchiveAccess archive) {
 		archiveAccess = archive;
+	}
+	
+	public static void addArchiveAccess(IArchiveAccess archive) {
+		archiveAccess = new MultiArchiveAccess(archiveAccess, archive);
 	}
 	
 	public static IArchiveAccess getArchiveAccess() {

@@ -1,18 +1,23 @@
 package de.m_marvin.openui.core.window;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+
 import org.lwjgl.glfw.GLFW;
 
+import de.m_marvin.gframe.GLStateManager;
+import de.m_marvin.gframe.inputbinding.UserInput;
+import de.m_marvin.gframe.resources.IResourceProvider;
+import de.m_marvin.gframe.resources.ISourceFolder;
+import de.m_marvin.gframe.resources.ResourceLoader;
+import de.m_marvin.gframe.shaders.ShaderLoader;
+import de.m_marvin.gframe.textures.TextureLoader;
+import de.m_marvin.gframe.windows.Window;
+import de.m_marvin.gframe.windows.Window.WindowEventType;
 import de.m_marvin.openui.core.UIContainer;
 import de.m_marvin.openui.core.components.Compound;
-import de.m_marvin.renderengine.GLStateManager;
-import de.m_marvin.renderengine.inputbinding.UserInput;
-import de.m_marvin.renderengine.resources.IResourceProvider;
-import de.m_marvin.renderengine.resources.ISourceFolder;
-import de.m_marvin.renderengine.resources.ResourceLoader;
-import de.m_marvin.renderengine.shaders.ShaderLoader;
-import de.m_marvin.renderengine.textures.TextureLoader;
-import de.m_marvin.renderengine.windows.Window;
-import de.m_marvin.renderengine.windows.Window.WindowEventType;
 import de.m_marvin.simplelogging.printing.Logger;
 import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2i;
@@ -70,6 +75,8 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 	private final UserInput inputHandler;
 
 	private Thread renderThread;
+	private Executor renderThreadExecutor;
+	private Queue<Runnable> renderThreadTasks;
 	private Window mainWindow;
 	protected UIContainer<R> uiContainer;
 	private int framesPerSecond;
@@ -90,6 +97,12 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 			return;
 		this.shouldClose = false;
 		this.initialized = false;
+		this.renderThreadTasks = new ArrayDeque<>();
+		this.renderThreadExecutor = task -> {
+			synchronized (this.renderThreadTasks) {
+				this.renderThreadTasks.add(task);
+			}
+		};
 		this.renderThread = new Thread(this::init, "RenderThread[" + this.windowName + "]");
 		this.renderThread.setDaemon(true);
 		this.renderThread.start();
@@ -100,8 +113,19 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		this.shouldClose = true;
 	}
 	
+	public void maximize() {
+		if (!this.isOpen()) return;
+		CompletableFuture.runAsync(() -> {
+			GLFW.glfwMaximizeWindow(this.mainWindow.windowId());
+		}, getRenderThreadExecutor());
+	}
+	
 	public boolean isInitialized() {
 		return initialized;
+	}
+	
+	public Executor getRenderThreadExecutor() {
+		return renderThreadExecutor;
 	}
 	
 	private void init() {
@@ -184,7 +208,16 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 				framesPerSecond = frameCount;
 				frameCount = 0;
 			}
-
+			
+			if (this.renderThreadTasks.size() > 0) {
+				try {
+					this.renderThreadTasks.poll().run();
+				} catch (Throwable e) {
+					Logger.defaultLogger().logError("Exception was thrown when executing render thread task:");
+					Logger.defaultLogger().printExceptionError(e);
+				}
+			}
+			
 		}
 		
 		this.shouldClose = true;
@@ -250,12 +283,15 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		}
 	}
 
-	protected void frame() {
-
+	protected void draw() {
 		this.uiContainer.updateComponentVAOs(textureLoader);
 		this.uiContainer.renderVAOs(shaderLoader, textureLoader);
+	}
+	
+	protected void frame() {
+		GLStateManager.clear();
+		draw();
 		mainWindow.glSwapFrames();
-
 	}
 	
 	protected abstract void initUI();
