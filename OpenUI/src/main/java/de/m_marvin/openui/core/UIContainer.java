@@ -1,11 +1,14 @@
 package de.m_marvin.openui.core;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.Executor;
 
 import de.m_marvin.gframe.buffers.BufferBuilder;
 import de.m_marvin.gframe.buffers.BufferUsage;
@@ -20,6 +23,7 @@ import de.m_marvin.gframe.textures.TextureLoader;
 import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.core.components.Compound;
+import de.m_marvin.simplelogging.printing.Logger;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
@@ -40,6 +44,8 @@ public class UIContainer<R extends IResourceProvider<R>> {
 	private PoseStack matrixStack;
 	private Vec2f cursorPosition = new Vec2f(-1, -1);
 	private Compound<R> topComponentUnderCursor = null;
+	private Executor renderThreadExecutor;
+	private Queue<Runnable> renderThreadTasks;
 	private Map<Long, List<ScheduleComponentTick<R>>> scheduleTicks = new LinkedHashMap<>();	
 	protected record ScheduleComponentTick<R extends IResourceProvider<R>>(Component<R> component, int arg) {}
 	
@@ -47,11 +53,23 @@ public class UIContainer<R extends IResourceProvider<R>> {
 		this(DEFAULT_INITIAL_BUFFER_SIZE, userInput);
 	}
 	
+	public Executor getRenderThreadExecutor() {
+		return renderThreadExecutor;
+	}
+	
 	public UIContainer(int initalBufferSize, UserInput userInput) {
 		this.userInput = userInput;
 		this.bufferSource = new SimpleBufferSource<R, UIRenderMode<R>>(initalBufferSize);
 		this.vertexBuffers = new LinkedHashMap<>();
 		this.component2bufferMap = new HashMap<>();
+		
+		this.renderThreadTasks = new ArrayDeque<>();
+		this.renderThreadExecutor = task -> {
+			synchronized (this.renderThreadTasks) {
+				this.renderThreadTasks.add(task);
+			}
+		};
+		
 		this.compound = new Compound<R>();
 		this.compound.setContainer(this);
 		this.compound.setOffset(new Vec2i(0, 0));
@@ -140,6 +158,22 @@ public class UIContainer<R extends IResourceProvider<R>> {
 	
 	public void setMatrixStack(PoseStack matrixStack) {
 		this.matrixStack = matrixStack;
+	}
+	
+	/**
+	 * Executes <b>one</b> of the pending render thread tasks passed to the render thread executor of this container.
+	 * Needs to be called periodically, and not limited by the fps.
+	 * <b>NEEDS TO BE CALLED ON RENDER THREAD</b>
+	 */
+	public void processTasks() {
+		if (this.renderThreadTasks.size() > 0) {
+			try {
+				this.renderThreadTasks.poll().run();
+			} catch (Throwable e) {
+				Logger.defaultLogger().logError("Exception was thrown when executing render thread task:");
+				Logger.defaultLogger().printExceptionError(e);
+			}
+		}
 	}
 	
 	/**

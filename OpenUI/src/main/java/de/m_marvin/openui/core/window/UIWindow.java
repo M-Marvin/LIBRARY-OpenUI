@@ -1,9 +1,6 @@
 package de.m_marvin.openui.core.window;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -75,8 +72,6 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 	private final UserInput inputHandler;
 
 	private Thread renderThread;
-	private Executor renderThreadExecutor;
-	private Queue<Runnable> renderThreadTasks;
 	private Window mainWindow;
 	protected UIContainer<R> uiContainer;
 	private int framesPerSecond;
@@ -97,12 +92,6 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 			return;
 		this.shouldClose = false;
 		this.initialized = false;
-		this.renderThreadTasks = new ArrayDeque<>();
-		this.renderThreadExecutor = task -> {
-			synchronized (this.renderThreadTasks) {
-				this.renderThreadTasks.add(task);
-			}
-		};
 		this.renderThread = new Thread(this::init, "RenderThread[" + this.windowName + "]");
 		this.renderThread.setDaemon(true);
 		this.renderThread.start();
@@ -117,15 +106,11 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		if (!this.isOpen()) return;
 		CompletableFuture.runAsync(() -> {
 			GLFW.glfwMaximizeWindow(this.mainWindow.windowId());
-		}, getRenderThreadExecutor());
+		}, this.uiContainer.getRenderThreadExecutor());
 	}
 	
 	public boolean isInitialized() {
 		return initialized;
-	}
-	
-	public Executor getRenderThreadExecutor() {
-		return renderThreadExecutor;
 	}
 	
 	private void init() {
@@ -209,14 +194,7 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 				frameCount = 0;
 			}
 			
-			if (this.renderThreadTasks.size() > 0) {
-				try {
-					this.renderThreadTasks.poll().run();
-				} catch (Throwable e) {
-					Logger.defaultLogger().logError("Exception was thrown when executing render thread task:");
-					Logger.defaultLogger().printExceptionError(e);
-				}
-			}
+			this.uiContainer.processTasks();
 			
 		}
 		
