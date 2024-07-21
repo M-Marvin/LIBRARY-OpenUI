@@ -103,7 +103,7 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 	}
 	
 	public void maximize() {
-		if (!this.isOpen()) return;
+		if (!this.isOpen() || this.uiContainer == null) return;
 		CompletableFuture.runAsync(() -> {
 			GLFW.glfwMaximizeWindow(this.mainWindow.windowId());
 		}, this.uiContainer.getRenderThreadExecutor());

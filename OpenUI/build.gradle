@@ -32,7 +32,7 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
 	// RenderEngine
-	api 'com.github.M-Marvin:LIBRARY-GraphicsFramework:v1.0'
+	api 'com.github.M-Marvin:LIBRARY-GraphicsFramework:c54b946a29'
 	
 	// ArchiveUtility
 	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:v2.1'

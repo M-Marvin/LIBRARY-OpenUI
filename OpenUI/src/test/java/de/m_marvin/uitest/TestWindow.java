@@ -3,6 +3,8 @@ package de.m_marvin.uitest;
 import java.awt.Color;
 import java.util.Random;
 
+import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
+import de.m_marvin.openui.core.UITextureHandler;
 import de.m_marvin.openui.core.layout.BorderLayout;
 import de.m_marvin.openui.core.layout.BorderLayout.BorderSection;
 import de.m_marvin.openui.core.layout.BorderLayout.CornerStretch;
@@ -13,6 +15,7 @@ import de.m_marvin.openui.flatmono.components.ButtonComponent;
 import de.m_marvin.openui.flatmono.components.GraphComponent;
 import de.m_marvin.openui.flatmono.components.GraphComponent.Graph;
 import de.m_marvin.openui.flatmono.components.GroupBox;
+import de.m_marvin.openui.flatmono.components.ImageComponent;
 import de.m_marvin.openui.flatmono.components.ScrollBarComponent;
 import de.m_marvin.openui.flatmono.components.TextFieldComponent;
 import de.m_marvin.openui.flatmono.components.ToggleButtonComponent;
@@ -39,6 +42,8 @@ public class TestWindow extends Window {
 	protected ButtonComponent bt_calibrateMax;
 	protected TextFieldComponent tf_captureValue;
 	protected ButtonComponent bt_capture;
+	
+	protected ImageComponent image;
 	
 	@Override
 	protected void initUI() {
@@ -240,6 +245,12 @@ public class TestWindow extends Window {
 				
 			}
 		}
+		
+//		UITextureHandler.ensureAtlasTexturesLoaded(this.getTextureLoader(), new ResourceLocation("flatmono:ui/IMG_001.png"), new ResourceLocation("ttt:ttt"), false, false);
+//		this.image = new ImageComponent(new ResourceLocation("flatmono:ui/IMG_001.png"));
+//		this.image.setSize(new Vec2i(500, 500));
+//		this.image.fixSize();
+//		b5.addComponent(this.image);
 		
 		for (int i = 0; i < 10; i++) {
 			for (int t = 0; t < 2; t++) {

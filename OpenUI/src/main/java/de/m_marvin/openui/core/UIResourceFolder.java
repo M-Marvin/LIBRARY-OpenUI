@@ -1,7 +1,9 @@
 package de.m_marvin.openui.core;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.Stream;
 
 import de.m_marvin.archiveutility.ArchiveAccess;
 import de.m_marvin.archiveutility.IArchiveAccess;
@@ -57,22 +59,29 @@ public class UIResourceFolder implements ISourceFolder {
 
 	@Override
 	public InputStream getAsStream(String path) throws IOException {
-		return archiveAccess.open(path);
+		try {
+			return archiveAccess.open(path);
+		} catch (IOException e) {
+			throw new FileNotFoundException("file not found: " + path);
+		}
 	}
 
 	@Override
 	public String[] listFiles(String path) {
-		return archiveAccess.listFiles(path);
+		int l = path.length();
+		return Stream.of(archiveAccess.listFiles(path)).map(s -> s.substring(l)).toArray(String[]::new);
 	}
 
 	@Override
 	public String[] listFolders(String path) {
-		return archiveAccess.listFolders(path);
+		int l = path.length();
+		return Stream.of(archiveAccess.listFiles(path)).map(s -> s.substring(l)).toArray(String[]::new);
 	}
 
 	@Override
 	public String[] listNamespaces() {
-		return archiveAccess.listFolders(ASSETS_PACKAGE);
+		int l = ASSETS_PACKAGE.length();
+		return Stream.of(archiveAccess.listFolders(ASSETS_PACKAGE)).map(s -> s.substring(l)).toArray(String[]::new);
 	}
 	
 }
