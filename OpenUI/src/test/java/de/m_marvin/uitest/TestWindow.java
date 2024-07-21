@@ -3,8 +3,6 @@ package de.m_marvin.uitest;
 import java.awt.Color;
 import java.util.Random;
 
-import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
-import de.m_marvin.openui.core.UITextureHandler;
 import de.m_marvin.openui.core.layout.BorderLayout;
 import de.m_marvin.openui.core.layout.BorderLayout.BorderSection;
 import de.m_marvin.openui.core.layout.BorderLayout.CornerStretch;

@@ -7,7 +7,7 @@ project.ext.lwjglVersion = "3.3.3"
 project.ext.lwjglNatives = "natives-windows"
 
 group = 'com.github.M-Marvin'
-version = '1.0'
+version = '1.1'
 
 repositories {
 	mavenCentral()
@@ -32,7 +32,7 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
 	// RenderEngine
-	api 'com.github.M-Marvin:LIBRARY-GraphicsFramework:c54b946a29'
+	api 'com.github.M-Marvin:LIBRARY-GraphicsFramework:v1.1'
 	
 	// ArchiveUtility
 	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:v2.1'
