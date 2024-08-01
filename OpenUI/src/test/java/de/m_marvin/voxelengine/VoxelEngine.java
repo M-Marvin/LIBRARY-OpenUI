@@ -5,6 +5,7 @@ import java.io.File;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL33;
 
+import de.m_marvin.gframe.GLFWStateManager;
 import de.m_marvin.gframe.GLStateManager;
 import de.m_marvin.gframe.inputbinding.UserInput;
 import de.m_marvin.gframe.inputbinding.bindingsource.KeySource;
@@ -126,7 +127,7 @@ public class VoxelEngine {
 		frameTime = 16; // ~60 FPS
 
 		// Setup GLFW
-		GLStateManager.initialize(System.err);
+		GLFWStateManager.initialize(System.out);
 
 		// Setup main window and camera
 		mainWindow = new Window(1000, 600, "Engine Test");
@@ -181,7 +182,7 @@ public class VoxelEngine {
 		}
 		
 		// Terminate GLFW
-		GLStateManager.terminate();
+		GLFWStateManager.terminate();
 		
 		Logger.defaultLogger().logInfo("Exit");
 		
@@ -261,6 +262,8 @@ public class VoxelEngine {
 				ticksPerSecond = tickCount;
 				tickCount = 0;
 			}
+			
+			GLFWStateManager.update();
 			
 		}
 		
@@ -406,7 +409,6 @@ public class VoxelEngine {
 	
 	private void tick() {
 		
-		mainWindow.pollEvents();
 		inputHandler.update();
 		
 		this.textureLoader.getTextureMaps().forEach((texture) -> {

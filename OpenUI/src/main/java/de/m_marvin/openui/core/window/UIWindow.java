@@ -1,6 +1,7 @@
 package de.m_marvin.openui.core.window;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -13,10 +14,10 @@ import de.m_marvin.gframe.shaders.ShaderLoader;
 import de.m_marvin.gframe.textures.TextureLoader;
 import de.m_marvin.gframe.windows.Window;
 import de.m_marvin.gframe.windows.Window.WindowEventType;
-import de.m_marvin.openui.core.UIContainer;
 import de.m_marvin.openui.core.components.Compound;
 import de.m_marvin.simplelogging.printing.Logger;
 import de.m_marvin.univec.impl.Vec2d;
+import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
 
 public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISourceFolder> {
@@ -64,6 +65,7 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 	
 	protected String windowName;
 	protected boolean adjustMaxScale = false;
+	protected Vec2f contenteScale = new Vec2f(1.0F, 1.0F);
 	protected final boolean clearCachesOnClose;
 	
 	private final ResourceLoader<R, S> resourceLoader;
@@ -72,11 +74,12 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 	private final UserInput inputHandler;
 
 	private Thread renderThread;
-	private Window mainWindow;
+	protected Window mainWindow;
 	protected UIContainer<R> uiContainer;
 	private int framesPerSecond;
 	private int frameTime;
-	private boolean initialized;
+	private CompletableFuture<Boolean> startup;
+	private CompletableFuture<Boolean> shutdown;
 	private boolean shouldClose;
 	
 	public void setAdjustMaxScale(boolean adjustMaxScale) {
@@ -87,49 +90,76 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		return !this.shouldClose;
 	}
 	
-	public void start() {
+	public CompletableFuture<Boolean> start() {
 		if (this.renderThread != null)
-			return;
+			return CompletableFuture.completedFuture(true);
 		this.shouldClose = false;
-		this.initialized = false;
+		this.startup = new CompletableFuture<Boolean>().orTimeout(10, TimeUnit.SECONDS).exceptionally(e -> {
+			Logger.defaultLogger().logError("Failed to start window:");
+			Logger.defaultLogger().printExceptionError(e);
+			return false;
+		});
 		this.renderThread = new Thread(this::init, "RenderThread[" + this.windowName + "]");
 		this.renderThread.setDaemon(true);
 		this.renderThread.start();
+		return this.startup;
 	}
 	
-	public void stop() {
-		this.initialized = false;
-		this.shouldClose = true;
+	public CompletableFuture<Boolean> stop() {
+		if (this.startup == null) return CompletableFuture.completedFuture(true);
+		return this.startup.thenApply(initialized -> {
+			if (!initialized) return true;
+			this.shutdown = new CompletableFuture<Boolean>().orTimeout(10, TimeUnit.SECONDS).exceptionally(e -> {
+				Logger.defaultLogger().logError("Failed to stop window:");
+				Logger.defaultLogger().printExceptionError(e);
+				return false;
+			});
+			this.shouldClose = true;
+			return this.shutdown.join();
+		});
 	}
 	
 	public void maximize() {
-		if (!this.isOpen() || this.uiContainer == null) return;
-		CompletableFuture.runAsync(() -> {
-			GLFW.glfwMaximizeWindow(this.mainWindow.windowId());
-		}, this.uiContainer.getRenderThreadExecutor());
+		this.mainWindow.maximize();
+	}
+	
+	public void minimize() {
+		this.mainWindow.minimize();
+	}
+	
+	public Vec2f getContentScale() {
+		return this.mainWindow.getContentScale();
+	}
+	
+	public void setVisible(boolean visible) {
+		this.mainWindow.setVisible(visible);
 	}
 	
 	public boolean isInitialized() {
-		return initialized;
+		return this.startup == null ? false : this.startup.join();
+	}
+	
+	protected void initWindow() {
+		mainWindow = new Window(1000, 600, this.windowName);
+	}
+	
+	protected void initOpenGL() {
+		mainWindow.makeContextCurrent();
+		GLStateManager.clearColor(1, 0, 1, 1);
 	}
 	
 	private void init() {
 		
 		try {
-
-			// Setup OpenGL and GLFW natives
-			if (!GLStateManager.initialize(System.err))
-				throw new IllegalStateException("Unable to initialize GLFW and OpenGL!");
 			
 			// Setup main window
-			mainWindow = new Window(1000, 600, this.windowName);
-			mainWindow.makeContextCurrent();
-			GLStateManager.clearColor(1, 0, 1, 1);
+			initWindow();
+			initOpenGL();
 			
 			// Setup input handler
 			inputHandler.attachToWindow(mainWindow.windowId());
 			
-			// Setup and start game loop
+			// Setup and start ui render loop
 			frameTime = 16; // ~60 FPS
 			setup();
 			startLoop();
@@ -158,10 +188,10 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 			
 		}
 		
-		// Terminate OpenGL and GLFW natives
-		GLStateManager.terminate();
-		
 		this.renderThread = null;
+		
+		this.startup = null;
+		if (this.shutdown != null) this.shutdown.complete(true);
 		
 	}
 
@@ -180,11 +210,12 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 			timeMillis = System.currentTimeMillis();
 			deltaFrame += (timeMillis - lastFrameTime) / (float) frameTime;
 
+			this.uiContainer.processTasks();
+			
 			if (deltaFrame >= 1) {
 				deltaFrame--;
 				frameCount++;
 				frame();
-				mainWindow.pollEvents();
 				inputHandler.update();
 			}
 
@@ -194,8 +225,6 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 				frameCount = 0;
 			}
 			
-			this.uiContainer.processTasks();
-			
 		}
 		
 		this.shouldClose = true;
@@ -204,27 +233,44 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 
 	protected void setup() {
 		
-		this.uiContainer = new UIContainer<>(this.inputHandler);
+		try {
+			this.uiContainer = new UIContainer<>(this.inputHandler);
+			
+			windowChangeContentScale(this.mainWindow.getContentScale());
+			initUI();
+			windowResized(new Vec2i(new Vec2f(this.mainWindow.getSize()).div(contenteScale)));
+			this.startup.complete(true);
+		} catch (Exception e) {
+			this.startup.completeExceptionally(e);
+		}
 		
-		initUI();
-		this.initialized = true;
-		
-		windowResized(new Vec2i(this.mainWindow.getSize()[0], this.mainWindow.getSize()[1]));
 		this.mainWindow.registerWindowListener((windowResize, type) -> {
-			if (windowResize.isPresent() && type == WindowEventType.RESIZED)
-				windowResized(windowResize.get());
+			if (windowResize.isPresent() && type == WindowEventType.RESIZED) {
+				this.uiContainer.getRenderThreadExecutor().execute(() -> {
+					windowResized(new Vec2i(windowResize.get().div(contenteScale)));
+				});
+			} else if (windowResize.isPresent() && type == WindowEventType.DPI_CHANGE) {
+				this.uiContainer.getRenderThreadExecutor().execute(() -> {
+					windowChangeContentScale(windowResize.get());
+				});
+			}
 		});
 
 	}
 	
+	public void setSize(Vec2i windowSize) {
+		Vec2i size = new Vec2i(contenteScale.mul(windowSize));
+		this.mainWindow.setSize(size.x, size.y);
+	}
+	
 	protected void autoSetMinSize() {
-		Vec2i minSize = this.uiContainer.calculateMinScreenSize();
+		Vec2i minSize = new Vec2i(contenteScale.mul(this.uiContainer.calculateMinScreenSize()));
 		this.mainWindow.setMinSize(minSize.x, minSize.y);
 	}
 
 	protected void autoSetMinAndMaxSize() {
-		Vec2i minSize = this.uiContainer.calculateMinScreenSize();
-		Vec2i maxSize = this.uiContainer.calculateMaxScreenSize();
+		Vec2i minSize = new Vec2i(contenteScale.mul(this.uiContainer.calculateMinScreenSize()));
+		Vec2i maxSize = new Vec2i(contenteScale.mul(this.uiContainer.calculateMaxScreenSize()));
 		/* some platforms seem to don't handle it well if only one of the upper size limits is DONT_CARE */
 		if (minSize.x == -1 && minSize.y != -1) minSize.x = 0;
 		if (minSize.y == -1 && minSize.x != -1) minSize.y = 0;
@@ -237,8 +283,14 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		this.mainWindow.setMinSize(GLFW.GLFW_DONT_CARE, GLFW.GLFW_DONT_CARE);
 	}
 	
+	protected void windowChangeContentScale(Vec2f scale) {
+		this.contenteScale = scale;
+		// Handle this as if the windows was resized (update layout, update viewport, etc)
+		windowResized(mainWindow.getSize());
+	}
+	
 	protected void windowResized(Vec2i screenSize) {
-		GLStateManager.resizeViewport(0, 0, screenSize.x, screenSize.y);
+		GLStateManager.resizeViewport(0, 0, (int) (screenSize.x * contenteScale.x), (int) (screenSize.y * contenteScale.y));
 		
 		if (this.adjustMaxScale) {
 			Vec2i compoundSize = this.uiContainer.getRootCompound().getSizeMin().copy();
@@ -253,16 +305,16 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 			if (screenRatio > compoundRatio) compoundSize.x *= screenRatio / compoundRatio; 
 			
 			float scale = compoundSize.x / (float) screenSize.x;
-			this.inputHandler.setCursorScale(new Vec2d(scale, scale));
+			this.inputHandler.setCursorScale(new Vec2d(scale, scale).div(contenteScale));
 			this.uiContainer.screenResize(compoundSize);
 		} else {
-			this.inputHandler.setCursorScale(new Vec2d(1, 1));
+			this.inputHandler.setCursorScale(new Vec2d(1, 1).div(contenteScale));
 			this.uiContainer.screenResize(screenSize);
 		}
 	}
 
 	protected void draw() {
-		this.uiContainer.updateComponentVAOs(textureLoader);
+		this.uiContainer.updateComponentVAOs(textureLoader, getContentScale());
 		this.uiContainer.renderVAOs(shaderLoader, textureLoader);
 	}
 	

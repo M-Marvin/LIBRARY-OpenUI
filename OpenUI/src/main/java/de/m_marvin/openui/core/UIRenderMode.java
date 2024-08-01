@@ -5,6 +5,7 @@ import de.m_marvin.gframe.resources.IResourceProvider;
 import de.m_marvin.gframe.shaders.ShaderInstance;
 import de.m_marvin.gframe.vertices.RenderPrimitive;
 import de.m_marvin.gframe.vertices.VertexFormat;
+import de.m_marvin.openui.core.window.UIContainer;
 
 public record UIRenderMode<R extends IResourceProvider<R>>(
 		RenderPrimitive primitive, 

@@ -3,6 +3,7 @@ package de.m_marvin.uitest;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import de.m_marvin.gframe.GLFWStateManager;
 import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
 import de.m_marvin.simplelogging.printing.Logger;
 
@@ -16,14 +17,20 @@ public class UITest {
 		// Redirect run folder (since all resources are located in the test folder)
 		//ResourceLoader.redirectRuntimeFolder(VoxelEngine.class.getClassLoader().getResource("").getPath().replace("bin/main/", "run/"));
 		
-		TestWindow window = new TestWindow();
+		GLFWStateManager.initialize(System.out);
 		
-		window.start();
-		window.maximize();
+		TestWindow window = new TestWindow();
+//		window.setAdjustMaxScale(true);
+		
+		window.start().thenAccept(e -> {
+			window.maximize();
+		});
 		
 		while (window.isOpen()) {
-			Thread.sleep(1000);
+			GLFWStateManager.update();
 		};
+		
+		GLFWStateManager.terminate();
 	}
 	
 	private static UITest instance;

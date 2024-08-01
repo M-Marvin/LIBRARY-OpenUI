@@ -197,8 +197,8 @@ public class ComponentEditorScreen extends ScreenBase {
 					int lx = (int) (- (windowSize.x - getSize().x) / 2);
 					int rx = (int) (getSize().x + (windowSize.x - getSize().x) / 2);
 					
-					int[] size = VoxelEngine.getInstance().getMainWindow().getSize();
-					applyScreenTransformation(poseStack, size[0], size[1]);
+					Vec2i size = VoxelEngine.getInstance().getMainWindow().getSize();
+					applyScreenTransformation(poseStack, size.x, size.y);
 					for (int x = -countWidth; x <= countWidth; x++) {
 						int cx = getSize().x / 2 + x * rasterWidth;
 						drawLine(buffer, poseStack, cx, by, cx, ty, 3, 0, 0, 0, 0.1F);

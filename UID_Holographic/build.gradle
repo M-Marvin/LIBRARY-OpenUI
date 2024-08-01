@@ -32,27 +32,20 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
 	
+	// LWJGL
+	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+	
 	// RenderEngine
-	//api 'com.github.M-Marvin:LIBRARY-GraphicsFramework:v1.1'
-	api 'de.m_marvin.gframe:GraphicsFramework:1.2'
-	
-	// ArchiveUtility
-	api 'com.github.M-Marvin:LIBRARY-ArchiveUtility:v2.1'
-	
-	// JBullet (Voxel Engine)
-	testImplementation "cz.advel.jbullet:jbullet:20101010-1"
-	
-	// SerialPortAccess (LN2CS)
-	testImplementation 'com.github.M-Marvin:LIBRARY-SerialPortAccess:main-SNAPSHOT'
+	api 'de.m_marvin.openui:OpenUI:1.2'
 	
 }
 
 publishing {
     publications {
         maven(MavenPublication) {
-        	groupId = 'de.m_marvin.openui'
-        	
-			from components.java
+        	from components.java
         }
     }
 }

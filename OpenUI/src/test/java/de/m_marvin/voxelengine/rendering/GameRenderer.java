@@ -14,6 +14,7 @@ import de.m_marvin.gframe.textures.maps.AbstractTextureMap;
 import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.unimat.impl.Quaternionf;
+import de.m_marvin.univec.impl.Vec2i;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.univec.impl.Vec4f;
 import de.m_marvin.voxelengine.VoxelEngine;
@@ -62,9 +63,9 @@ public class GameRenderer {
 	}
 	
 	public void updatePerspective() {
-		int[] windowSize = VoxelEngine.getInstance().getMainWindow().getSize();
-		this.projectionMatrix = Matrix4f.perspective(this.fov, windowSize[0] / (float) windowSize[1], 1, 1000);
-		executeOnRenderStage(RenderStage.UTIL, false, () -> GLStateManager.resizeViewport(0, 0, windowSize[0], windowSize[1]));
+		Vec2i windowSize = VoxelEngine.getInstance().getMainWindow().getSize();
+		this.projectionMatrix = Matrix4f.perspective(this.fov, windowSize.x / (float) windowSize.y, 1, 1000);
+		executeOnRenderStage(RenderStage.UTIL, false, () -> GLStateManager.resizeViewport(0, 0, windowSize.x, windowSize.y));
 	}
 	
 	public Matrix4f getProjectionMatrix() {
@@ -90,9 +91,9 @@ public class GameRenderer {
 		
 		if (shader != null) {
 			
-			int[] size = VoxelEngine.getInstance().getMainWindow().getSize();
+			Vec2i size = VoxelEngine.getInstance().getMainWindow().getSize();
 			PoseStack poseStack = new PoseStack();
-			screen.drawScreen(poseStack, size[0], size[1], partialTick);
+			screen.drawScreen(poseStack, size.x, size.y, partialTick);
 			
 			shader.useShader();
 			shader.getUniform("Interpolation").setFloat(partialTick);

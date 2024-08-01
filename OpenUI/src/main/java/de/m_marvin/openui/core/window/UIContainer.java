@@ -1,4 +1,4 @@
-package de.m_marvin.openui.core;
+package de.m_marvin.openui.core.window;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import de.m_marvin.gframe.shaders.ShaderInstance;
 import de.m_marvin.gframe.shaders.ShaderLoader;
 import de.m_marvin.gframe.textures.TextureLoader;
 import de.m_marvin.gframe.translation.PoseStack;
+import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.core.components.Compound;
 import de.m_marvin.simplelogging.printing.Logger;
@@ -65,9 +66,7 @@ public class UIContainer<R extends IResourceProvider<R>> {
 		
 		this.renderThreadTasks = new ArrayDeque<>();
 		this.renderThreadExecutor = task -> {
-			synchronized (this.renderThreadTasks) {
-				this.renderThreadTasks.add(task);
-			}
+			this.renderThreadTasks.add(task);
 		};
 		
 		this.compound = new Compound<R>();
@@ -167,11 +166,13 @@ public class UIContainer<R extends IResourceProvider<R>> {
 	 */
 	public void processTasks() {
 		if (this.renderThreadTasks.size() > 0) {
-			try {
-				this.renderThreadTasks.poll().run();
-			} catch (Throwable e) {
-				Logger.defaultLogger().logError("Exception was thrown when executing render thread task:");
-				Logger.defaultLogger().printExceptionError(e);
+			while (!this.renderThreadTasks.isEmpty()) {
+				try {
+					this.renderThreadTasks.poll().run();
+				} catch (Throwable e) {
+					Logger.defaultLogger().logError("Exception was thrown when executing render thread task:");
+					Logger.defaultLogger().printExceptionError(e);
+				}
 			}
 		}
 	}
@@ -180,7 +181,7 @@ public class UIContainer<R extends IResourceProvider<R>> {
 	 * Check if any components need to be redrawn, and update the VAOs.<br>
 	 * <b>NEEDS TO BE CALLED ON RENDER THREAD</b>
 	 */
-	public void updateComponentVAOs(TextureLoader<R, ? extends ISourceFolder> textureLoader) {
+	public void updateComponentVAOs(TextureLoader<R, ? extends ISourceFolder> textureLoader, Vec2f contentScale) {
 		this.activeTexureLoader = textureLoader;
 		if (this.matrixStack == null) this.matrixStack = new PoseStack();
 		this.matrixStack.push();
