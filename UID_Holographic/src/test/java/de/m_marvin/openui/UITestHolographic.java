@@ -1,7 +1,6 @@
 package de.m_marvin.openui;
 
 import de.m_marvin.gframe.GLFWStateManager;
-import openui.assets.holographic.TestWindow;
 
 public class UITestHolographic {
 	

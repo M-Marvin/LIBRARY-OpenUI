@@ -14,11 +14,13 @@ import de.m_marvin.univec.impl.Vec2i;
 
 public class GrabBar extends Component<ResourceLocation> {
 	
-	protected Vec2d grabOffset = null;
 	protected final Window window;
+	protected Vec2d grabOffset = null;
 	
 	public GrabBar(Window window) {
 		this.window = window;
+		this.setSizeMin(new Vec2i(20, 20));
+		this.fixSize();
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class GrabBar extends Component<ResourceLocation> {
 	@Override
 	protected void cursorMove(Vec2d position, boolean entered, boolean leaved) {
 		if (this.grabOffset != null) {
-			Vec2i windowPos = new Vec2i(this.window.getPosition());
+			Vec2i windowPos = this.window.getPosition();
 			Vec2i cursorPos = new Vec2i(this.window.getCourserPos());
 			this.window.setPosition(windowPos.add(cursorPos).sub(this.grabOffset));
 		}
