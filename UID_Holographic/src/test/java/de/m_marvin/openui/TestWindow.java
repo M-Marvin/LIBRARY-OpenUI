@@ -35,6 +35,7 @@ public class TestWindow extends WindowHolographic {
 		cnt.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.CENTERED));
 		cnt.setSizeMin(new Vec2i(60, 40));
 		cnt.setSizeMax(new Vec2i(-1, -1));
+		cnt.setMargin(5, 5, 5, 5);
 		gr.addComponent(cnt);
 		
 		gr.addComponent(g);
