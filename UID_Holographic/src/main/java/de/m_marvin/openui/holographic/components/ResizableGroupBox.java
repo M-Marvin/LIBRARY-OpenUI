@@ -13,6 +13,7 @@ import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.flatmono.UtilRenderer;
 import de.m_marvin.univec.impl.Vec2d;
+import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
 
 public class ResizableGroupBox extends Component<ResourceLocation> {
@@ -46,13 +47,15 @@ public class ResizableGroupBox extends Component<ResourceLocation> {
 	@Override
 	protected void onClicked(int button, boolean pressed, boolean repeated) {
 		if (pressed && this.grabOffset == null) {
-			Vec2d grabPos = this.window.getCourserPos();
+			Vec2f scale = this.window.getContentScale();
+			Vec2d grabPos = this.window.getCourserPos().div(scale);
+			Vec2d size = new Vec2d(this.size);
 			
 			// Check which sides where grabbed
 			boolean l = grabPos.x <= this.grabFrameWidth;
-			boolean r = grabPos.x >= this.size.x - this.grabFrameWidth;
+			boolean r = grabPos.x >= size.x - this.grabFrameWidth;
 			boolean u = grabPos.y <= this.grabFrameWidth;
-			boolean b = grabPos.y >= this.size.y - this.grabFrameWidth;
+			boolean b = grabPos.y >= size.y - this.grabFrameWidth;
 			this.grabSideW = l ? -1 : r ? 1 : 0;
 			this.grabSideH = u ? -1 : b ? 1 : 0;
 			
@@ -87,8 +90,8 @@ public class ResizableGroupBox extends Component<ResourceLocation> {
 			Vec2i windowSize = this.window.getSize();
 			Vec2i windowPos = this.window.getPosition();
 			Vec2i coursorPos = new Vec2i(this.window.getCourserPos());
-			Vec2i minSize = this.getSizeMin().mul(this.window.getContentScale());
-			Vec2i maxSize = this.getSizeMax().mul(this.window.getContentScale());
+			Vec2i minSize = new Vec2i(new Vec2f(this.getSizeMin()).mul(this.window.getContentScale()));
+			Vec2i maxSize = new Vec2i(new Vec2f(this.getSizeMax()).mul(this.window.getContentScale()));
 			
 			// Resize width
 			if (this.grabSideW == 1) {
