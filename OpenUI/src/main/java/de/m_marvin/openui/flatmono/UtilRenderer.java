@@ -11,14 +11,14 @@ import de.m_marvin.openui.core.UIRenderMode;
 
 public class UtilRenderer {
 	
-	public static void renderRectangle(int x, int y, int w, int h, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawRectangle(int x, int y, int w, int h, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		matrixStack.push();
 		matrixStack.translate(x, y, 0);
-		renderRectangle(w, h, color, bufferSource, matrixStack);
+		drawRectangle(w, h, color, bufferSource, matrixStack);
 		matrixStack.pop();
 	}
 	
-	public static void renderRectangle(int w, int h, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawRectangle(int w, int h, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
 		float r = color.getRed() / 255F;
 		float g = color.getGreen() / 255F;
@@ -44,14 +44,14 @@ public class UtilRenderer {
 		
 	}
 	
-	public static void renderFrame(int x, int y, int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawFrame(int x, int y, int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		matrixStack.push();
 		matrixStack.translate(x, y, 0);
-		renderFrame(w, h, frameWidth, frameColor, bufferSource, matrixStack);
+		drawFrame(w, h, frameWidth, frameColor, bufferSource, matrixStack);
 		matrixStack.pop();
 	}
 	
-	public static void renderFrame(int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawFrame(int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
 		float r = frameColor.getRed() / 255F;
 		float g = frameColor.getGreen() / 255F;
@@ -106,14 +106,14 @@ public class UtilRenderer {
 		
 	}
 	
-	public static void renderTriangleFrame(int x, int y, int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawTriangleFrame(int x, int y, int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		matrixStack.push();
 		matrixStack.translate(x, y, 0);
-		renderTriangleFrame(w, h, frameWidth, frameColor, bufferSource, matrixStack);
+		drawTriangleFrame(w, h, frameWidth, frameColor, bufferSource, matrixStack);
 		matrixStack.pop();
 	}
 	
-	public static void renderTriangleFrame(int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawTriangleFrame(int w, int h, int frameWidth, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
 		float r = frameColor.getRed() / 255F;
 		float g = frameColor.getGreen() / 255F;
@@ -163,14 +163,14 @@ public class UtilRenderer {
 		
 	}
 
-	public static void renderTriangle(int x, int y, int w, int h, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawTriangle(int x, int y, int w, int h, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		matrixStack.push();
 		matrixStack.translate(x, y, 0);
-		renderTriangle(w, h, frameColor, bufferSource, matrixStack);
+		drawTriangle(w, h, frameColor, bufferSource, matrixStack);
 		matrixStack.pop();
 	}
 	
-	public static void renderTriangle(int w, int h, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawTriangle(int w, int h, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
 		float r = frameColor.getRed() / 255F;
 		float g = frameColor.getGreen() / 255F;
@@ -193,14 +193,14 @@ public class UtilRenderer {
 		
 	}
 	
-	public static void renderClickableRectangle(int x, int y, int w, int h, int pxx, int pxy, int pxw, int pxh, int p, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawClickableRectangle(int x, int y, int w, int h, int pxx, int pxy, int pxw, int pxh, int p, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		matrixStack.push();
 		matrixStack.translate(x, y, 0);
-		renderClickableRectangle(w, h, pxx, pxy, pxw, pxh, p, color, bufferSource, matrixStack);
+		drawClickableRectangle(w, h, pxx, pxy, pxw, pxh, p, color, bufferSource, matrixStack);
 		matrixStack.pop();
 	}
 	
-	public static void renderClickableRectangle(int w, int h, int pxx, int pxy, int pxw, int pxh, int p, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawClickableRectangle(int w, int h, int pxx, int pxy, int pxw, int pxh, int p, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
 		float r = color.getRed() / 255F;
 		float g = color.getGreen() / 255F;
@@ -220,14 +220,14 @@ public class UtilRenderer {
 		
 	}
 	
-	public static void renderCircle(int x, int y, int w, int h, int pxcx, int pxcy, int pxri, int pxro, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawCircle(int x, int y, int w, int h, int pxcx, int pxcy, int pxri, int pxro, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		matrixStack.push();
 		matrixStack.translate(x, y, 0);
-		renderCircle(w, h, pxcx, pxcy, pxri, pxro, color, bufferSource, matrixStack);
+		drawCircle(w, h, pxcx, pxcy, pxri, pxro, color, bufferSource, matrixStack);
 		matrixStack.pop();
 	}
 	
-	public static void renderCircle(int w, int h, int pxcx, int pxcy, int pxri, int pxro, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawCircle(int w, int h, int pxcx, int pxcy, int pxri, int pxro, Color color, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
 		float r = color.getRed() / 255F;
 		float g = color.getGreen() / 255F;
@@ -247,14 +247,14 @@ public class UtilRenderer {
 		
 	}
 
-	public static void renderTexture(int x, int y, int w, int h, ResourceLocation texture, Color color, SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawTexture(int x, int y, int w, int h, ResourceLocation texture, Color color, SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		matrixStack.push();
 		matrixStack.translate(x, y, 0);
-		renderTexture(w, h, texture, color, bufferSource, matrixStack);
+		drawTexture(w, h, texture, color, bufferSource, matrixStack);
 		matrixStack.pop();
 	}
 	
-	public static void renderTexture(int w, int h, ResourceLocation texture, Color color, SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+	public static void drawTexture(int w, int h, ResourceLocation texture, Color color, SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
 		float r = color.getRed() / 255F;
 		float g = color.getGreen() / 255F;

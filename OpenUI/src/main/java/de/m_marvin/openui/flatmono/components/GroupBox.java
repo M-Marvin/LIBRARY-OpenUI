@@ -47,14 +47,14 @@ public class GroupBox extends Compound<ResourceLocation> {
 	@Override
 	public void drawBackground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		UtilRenderer.renderRectangle(this.size.x, this.size.y, this.backgroundColor, bufferSource, matrixStack);
+		UtilRenderer.drawRectangle(this.size.x, this.size.y, this.backgroundColor, bufferSource, matrixStack);
 		
 	}
 	
 	@Override
 	public void drawForeground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		UtilRenderer.renderFrame(this.size.x, this.size.y, this.frameWidth, this.frameColor, bufferSource, matrixStack);
+		UtilRenderer.drawFrame(this.size.x, this.size.y, this.frameWidth, this.frameColor, bufferSource, matrixStack);
 		
 	}
 	

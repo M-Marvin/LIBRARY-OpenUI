@@ -113,7 +113,7 @@ public class ButtonComponent extends Component<ResourceLocation> {
 		
 		int p = this.pressed ? 2 : (this.cursorOverComponent ? 1 : 0);
 		
-		UtilRenderer.renderClickableRectangle(this.size.x, this.size.y, 0, 0, this.size.x, this.size.y, p, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawClickableRectangle(this.size.x, this.size.y, 0, 0, this.size.x, this.size.y, p, this.color, bufferSource, matrixStack);
 		
 	}
 	

@@ -83,14 +83,14 @@ public class ImageComponent extends Component<ResourceLocation> {
 	@Override
 	public void drawBackground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		UtilRenderer.renderRectangle(this.size.x, this.size.y, this.backgroundColor, bufferSource, matrixStack);
+		UtilRenderer.drawRectangle(this.size.x, this.size.y, this.backgroundColor, bufferSource, matrixStack);
 		
 	}
 	
 	@Override
 	public void drawForeground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 
-		UtilRenderer.renderTexture(this.size.x, this.size.y, this.imageLocation, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawTexture(this.size.x, this.size.y, this.imageLocation, this.color, bufferSource, matrixStack);
 		
 	}
 	

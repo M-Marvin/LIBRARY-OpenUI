@@ -390,7 +390,7 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 	@Override
 	public void drawForeground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		UtilRenderer.renderFrame(this.size.x, this.size.y, FRAME_WIDTH, this.textColor, bufferSource, matrixStack);
+		UtilRenderer.drawFrame(this.size.x, this.size.y, FRAME_WIDTH, this.textColor, bufferSource, matrixStack);
 		
 		if (this.isFocused() && this.cursorState) {
 			
@@ -401,7 +401,7 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 			int cursorWidth = this.textOverride && this.cursorPosition < this.text.length() ? FontRenderer.calculateStringWidth(String.valueOf(this.text.charAt(cursorPosition)), this.font) : TEXT_BORDER_GAP;
 			int cursorHeight = FontRenderer.getFontHeight(this.font) - TEXT_BORDER_GAP;
 			
-			UtilRenderer.renderRectangle(cursorPos + TEXT_BORDER_GAP, TEXT_BORDER_GAP, cursorWidth, cursorHeight, this.textColor, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(cursorPos + TEXT_BORDER_GAP, TEXT_BORDER_GAP, cursorWidth, cursorHeight, this.textColor, bufferSource, matrixStack);
 			
 			if (this.selectionStart != this.selectionEnd) {
 				
@@ -415,7 +415,7 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 				if (startPos > this.size.x - 2) startPos = this.size.x - TEXT_BORDER_GAP;
 				if (endPos > this.size.x - 2) endPos = this.size.x - TEXT_BORDER_GAP;
 				
-				UtilRenderer.renderRectangle(startPos + TEXT_BORDER_GAP, TEXT_BORDER_GAP, endPos - startPos, cursorHeight, this.textColor, bufferSource, matrixStack);
+				UtilRenderer.drawRectangle(startPos + TEXT_BORDER_GAP, TEXT_BORDER_GAP, endPos - startPos, cursorHeight, this.textColor, bufferSource, matrixStack);
 				
 			}
 			

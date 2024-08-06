@@ -9,6 +9,7 @@ import de.m_marvin.gframe.windows.Window;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.flatmono.UtilRenderer;
+import de.m_marvin.openui.holographic.HoloRenderer;
 import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2i;
 
@@ -16,6 +17,9 @@ public class GrabBar extends Component<ResourceLocation> {
 	
 	protected final Window window;
 	protected Vec2d grabOffset = null;
+	protected Color color = new Color(255, 0, 0, 128);
+	
+	protected static final int FILL_MARGIN = 5;
 	
 	public GrabBar(Window window) {
 		this.window = window;
@@ -23,10 +27,24 @@ public class GrabBar extends Component<ResourceLocation> {
 		this.fixSize();
 	}
 	
+	public GrabBar(Window window, Color color) {
+		this(window);
+		this.color = color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	
 	@Override
 	public void drawBackground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		UtilRenderer.renderFrame(this.size.x, this.size.y, 2, Color.WHITE, bufferSource, matrixStack);
+		HoloRenderer.drawFrame(this.size.x, this.size.y, Color.white, bufferSource, matrixStack);
+		UtilRenderer.drawRectangle(FILL_MARGIN, FILL_MARGIN, this.size.x - FILL_MARGIN * 2, this.size.y - FILL_MARGIN * 2, this.color, bufferSource, matrixStack);
 		
 		super.drawBackground(bufferSource, matrixStack);
 	}

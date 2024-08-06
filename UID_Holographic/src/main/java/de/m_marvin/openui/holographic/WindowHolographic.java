@@ -29,7 +29,7 @@ public abstract class WindowHolographic extends WindowFlatMono {
 	@Override
 	protected void initOpenGL() {
 		super.initOpenGL();
-		GLStateManager.clearColor(0, 0, 0, 0.2F);
+		GLStateManager.clearColor(0, 0, 0, 0);
 		this.getMainWindow().setOpacity(this.opacity);
 	}
 	

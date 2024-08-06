@@ -235,11 +235,11 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 			int ryb = Math.min(this.size.y, barPos + barSize + BAR_RAIL_GAP);
 			int rhb = this.size.y - ryb;
 			
-			UtilRenderer.renderRectangle(0, ryt, RAIL_WIDTH, rht, this.color, bufferSource, matrixStack);
-			UtilRenderer.renderRectangle(0, ryb, RAIL_WIDTH, rhb, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(0, ryt, RAIL_WIDTH, rht, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(0, ryb, RAIL_WIDTH, rhb, this.color, bufferSource, matrixStack);
 
-			UtilRenderer.renderRectangle(this.size.x - RAIL_WIDTH, ryt, RAIL_WIDTH, rht, this.color, bufferSource, matrixStack);
-			UtilRenderer.renderRectangle(this.size.x - RAIL_WIDTH, ryb, RAIL_WIDTH, rhb, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(this.size.x - RAIL_WIDTH, ryt, RAIL_WIDTH, rht, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(this.size.x - RAIL_WIDTH, ryb, RAIL_WIDTH, rhb, this.color, bufferSource, matrixStack);
 			
 			BufferBuilder buffer = bufferSource.startBuffer(UIRenderModes.plainClickable());
 			
@@ -267,11 +267,11 @@ public class ScrollBarComponent extends Component<ResourceLocation> {
 			int rxl = 0;
 			int rwl = Math.max(0, barPos - BAR_RAIL_GAP);
 			
-			UtilRenderer.renderRectangle(rxl, 0, rwl, RAIL_WIDTH, this.color, bufferSource, matrixStack);
-			UtilRenderer.renderRectangle(rxr, 0, rwr, RAIL_WIDTH, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(rxl, 0, rwl, RAIL_WIDTH, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(rxr, 0, rwr, RAIL_WIDTH, this.color, bufferSource, matrixStack);
 
-			UtilRenderer.renderRectangle(rxl, this.size.y - RAIL_WIDTH, rwl, RAIL_WIDTH, this.color, bufferSource, matrixStack);
-			UtilRenderer.renderRectangle(rxr, this.size.y - RAIL_WIDTH, rwr, RAIL_WIDTH, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(rxl, this.size.y - RAIL_WIDTH, rwl, RAIL_WIDTH, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(rxr, this.size.y - RAIL_WIDTH, rwr, RAIL_WIDTH, this.color, bufferSource, matrixStack);
 			
 			BufferBuilder buffer = bufferSource.startBuffer(UIRenderModes.plainClickable());
 			

@@ -172,14 +172,14 @@ public class GraphComponent extends Component<ResourceLocation> {
 			
 			if (ix % this.scalaNumberScaleX != 0) continue;
 			
-			UtilRenderer.renderRectangle(Math.round((ix - this.minValueX) * gw), 0, ix == 0 ? 2 : 1, this.size.y, ix == 0 ? this.color : rc, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(Math.round((ix - this.minValueX) * gw), 0, ix == 0 ? 2 : 1, this.size.y, ix == 0 ? this.color : rc, bufferSource, matrixStack);
 			
 		}
 		for (int iy = this.minValueY; iy < this.maxValueY; iy++) {
 
 			if (iy % this.scalaNumberScaleY != 0) continue;
 			
-			UtilRenderer.renderRectangle(0, Math.round(this.size.y - (iy - this.minValueY) * gh), this.size.x, iy == 0 ? 2 : 1, iy == 0 ? this.color : rc, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(0, Math.round(this.size.y - (iy - this.minValueY) * gh), this.size.x, iy == 0 ? 2 : 1, iy == 0 ? this.color : rc, bufferSource, matrixStack);
 			
 		}
 		
@@ -219,7 +219,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 
 		shiftRenderLayer();
 
-		UtilRenderer.renderFrame(this.size.x, this.size.y, 1, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawFrame(this.size.x, this.size.y, 1, this.color, bufferSource, matrixStack);
 		
 		if (this.showDigits) {
 			

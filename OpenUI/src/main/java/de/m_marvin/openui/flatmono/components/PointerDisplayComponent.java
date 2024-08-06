@@ -147,7 +147,7 @@ public class PointerDisplayComponent extends Component<ResourceLocation> {
 		int ro = this.size.x / 2;
 		int ri = ro - FRAME_WIDTH;
 		
-		UtilRenderer.renderCircle(this.size.x, this.size.y, this.size.x / 2, this.size.y / 2, ri, ro, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawCircle(this.size.x, this.size.y, this.size.x / 2, this.size.y / 2, ri, ro, this.color, bufferSource, matrixStack);
 		
 		shiftRenderLayer();
 		
@@ -163,7 +163,7 @@ public class PointerDisplayComponent extends Component<ResourceLocation> {
 			int value = this.minValue + i;
 			int sl = (value % 10 == 0) ? SCALA_LINE_LENGTH_10 : (value % 5 == 0) ? SCALA_LINE_LENGTH_5 : SCALA_LINE_LENGTH_1;
 			
-			UtilRenderer.renderRectangle(0, ri - sl - FRAME_GAP, 1, sl, this.textColor, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(0, ri - sl - FRAME_GAP, 1, sl, this.textColor, bufferSource, matrixStack);
 
 			matrixStack.rotateDegrees(0, 0, angleSteps);
 			
@@ -206,10 +206,10 @@ public class PointerDisplayComponent extends Component<ResourceLocation> {
 		
 		matrixStack.rotateDegrees(0, 0, 270 * (this.value - this.minValue) / (float) (this.maxValue - this.minValue));
 		
-		UtilRenderer.renderRectangle(-POINTER_WIDTH / 2, -ri + POINTER_FRAME_GAP, POINTER_WIDTH, ri + POINTER_WIDTH / 2 - POINTER_FRAME_GAP, this.color, bufferSource, matrixStack);
-		UtilRenderer.renderTriangle(-POINTER_WIDTH / 2, -ri + POINTER_FRAME_GAP - POINTER_TIP_LENGTH, POINTER_WIDTH, POINTER_TIP_LENGTH, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawRectangle(-POINTER_WIDTH / 2, -ri + POINTER_FRAME_GAP, POINTER_WIDTH, ri + POINTER_WIDTH / 2 - POINTER_FRAME_GAP, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawTriangle(-POINTER_WIDTH / 2, -ri + POINTER_FRAME_GAP - POINTER_TIP_LENGTH, POINTER_WIDTH, POINTER_TIP_LENGTH, this.color, bufferSource, matrixStack);
 		
-		UtilRenderer.renderCircle(-10, -10, 20, 20, 10, 10, 0, 10, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawCircle(-10, -10, 20, 20, 10, 10, 0, 10, this.color, bufferSource, matrixStack);
 		
 		matrixStack.pop();
 		

@@ -4,10 +4,10 @@ import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
 import de.m_marvin.openui.core.components.Compound;
 import de.m_marvin.openui.core.layout.BorderLayout;
 import de.m_marvin.openui.core.layout.BorderLayout.BorderSection;
-import de.m_marvin.openui.flatmono.components.GroupBox;
 import de.m_marvin.openui.holographic.WindowHolographic;
+import de.m_marvin.openui.holographic.components.FrameGroupBox;
 import de.m_marvin.openui.holographic.components.GrabBar;
-import de.m_marvin.openui.holographic.components.ResizableGroupBox;
+import de.m_marvin.openui.holographic.components.ResizeFrame;
 import de.m_marvin.univec.impl.Vec2i;
 
 public class TestWindow extends WindowHolographic {
@@ -22,23 +22,26 @@ public class TestWindow extends WindowHolographic {
 		Compound<ResourceLocation> root = getRootComponent();
 		root.setLayout(new BorderLayout());
 		
-		ResizableGroupBox gr = new ResizableGroupBox(this.getMainWindow());
+		ResizeFrame gr = new ResizeFrame(this.getMainWindow());
 		gr.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.CENTERED));
 		gr.setLayout(new BorderLayout());
+		
+		int grabBorder = gr.getGrabFrameWidth();
 
 		GrabBar g = new GrabBar(this.getMainWindow());
 		g.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.TOP));
 		g.setSizeMin(new Vec2i(60, 20));
 		g.setSizeMax(new Vec2i(-1, 20));
+		g.setMargin(grabBorder, grabBorder, grabBorder, 4);
+		gr.addComponent(g);
 		
-		GroupBox cnt = new GroupBox();
+		FrameGroupBox cnt = new FrameGroupBox();
 		cnt.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.CENTERED));
 		cnt.setSizeMin(new Vec2i(60, 40));
 		cnt.setSizeMax(new Vec2i(-1, -1));
-		cnt.setMargin(5, 5, 5, 5);
+		cnt.setMargin(grabBorder, grabBorder, 0, grabBorder);
 		gr.addComponent(cnt);
 		
-		gr.addComponent(g);
 		gr.autoSetMaxAndMinSize();
 		
 		root.addComponent(gr);

@@ -138,22 +138,22 @@ public class BarComponent extends Component<ResourceLocation> {
 
 		if (!this.horizontal) {
 
-			UtilRenderer.renderRectangle(0, 0, FRAME_WIDTH, this.size.y, this.color, bufferSource, matrixStack);
-			UtilRenderer.renderRectangle(this.size.x - FRAME_WIDTH, 0, FRAME_WIDTH, this.size.y, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(0, 0, FRAME_WIDTH, this.size.y, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(this.size.x - FRAME_WIDTH, 0, FRAME_WIDTH, this.size.y, this.color, bufferSource, matrixStack);
 			
 			int barHeight = (int) (((this.value - this.minValue) / (float) (this.maxValue - this.minValue)) * (this.size.y - BAR_FRAME_GAP * 2));
 			int barOffset = this.size.y - BAR_FRAME_GAP - barHeight;
 			
-			UtilRenderer.renderRectangle(BAR_FRAME_GAP, barOffset, this.size.x - BAR_FRAME_GAP * 2, barHeight, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(BAR_FRAME_GAP, barOffset, this.size.x - BAR_FRAME_GAP * 2, barHeight, this.color, bufferSource, matrixStack);
 			
 		} else {
 
-			UtilRenderer.renderRectangle(0, 0, this.size.x, FRAME_WIDTH, this.color, bufferSource, matrixStack);
-			UtilRenderer.renderRectangle(0, this.size.y - FRAME_WIDTH, this.size.x, FRAME_WIDTH, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(0, 0, this.size.x, FRAME_WIDTH, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(0, this.size.y - FRAME_WIDTH, this.size.x, FRAME_WIDTH, this.color, bufferSource, matrixStack);
 			
 			int barWidth = (int) (((this.value - this.minValue) / (float) (this.maxValue - this.minValue)) * (this.size.x - BAR_FRAME_GAP * 2));
 			
-			UtilRenderer.renderRectangle(BAR_FRAME_GAP, BAR_FRAME_GAP, barWidth, this.size.y - BAR_FRAME_GAP * 2, this.color, bufferSource, matrixStack);
+			UtilRenderer.drawRectangle(BAR_FRAME_GAP, BAR_FRAME_GAP, barWidth, this.size.y - BAR_FRAME_GAP * 2, this.color, bufferSource, matrixStack);
 			
 		}
 		

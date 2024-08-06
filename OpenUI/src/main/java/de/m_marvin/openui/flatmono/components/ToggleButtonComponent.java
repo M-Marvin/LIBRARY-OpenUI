@@ -128,10 +128,10 @@ public class ToggleButtonComponent extends Component<ResourceLocation> {
 		byte pa = (byte) (this.pressed ? 2 : (this.cursorOverComponent ? 1 : 0));
 		byte pb = (byte) (!this.state ? 2 : (this.cursorOverComponent ? 1 : 0));
 		
-		UtilRenderer.renderClickableRectangle(0, 0, TOGGLE_WIDTH, this.size.y, 0, 0, this.size.x, this.size.y, pa, this.color, bufferSource, matrixStack);
-		UtilRenderer.renderClickableRectangle(this.size.x - TOGGLE_WIDTH, 0, TOGGLE_WIDTH, this.size.y, this.size.x - TOGGLE_WIDTH, 0, this.size.x, this.size.y, pa, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawClickableRectangle(0, 0, TOGGLE_WIDTH, this.size.y, 0, 0, this.size.x, this.size.y, pa, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawClickableRectangle(this.size.x - TOGGLE_WIDTH, 0, TOGGLE_WIDTH, this.size.y, this.size.x - TOGGLE_WIDTH, 0, this.size.x, this.size.y, pa, this.color, bufferSource, matrixStack);
 		
-		UtilRenderer.renderClickableRectangle(BUTTON_MARGIN, 0, this.size.x - BUTTON_MARGIN * 2, this.size.y, BUTTON_MARGIN, 0, this.size.x, this.size.y, pb, this.color, bufferSource, matrixStack);
+		UtilRenderer.drawClickableRectangle(BUTTON_MARGIN, 0, this.size.x - BUTTON_MARGIN * 2, this.size.y, BUTTON_MARGIN, 0, this.size.x, this.size.y, pb, this.color, bufferSource, matrixStack);
 		
 	}
 	

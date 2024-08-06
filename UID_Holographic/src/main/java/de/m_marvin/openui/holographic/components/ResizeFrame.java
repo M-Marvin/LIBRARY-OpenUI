@@ -9,6 +9,7 @@ import de.m_marvin.gframe.buffers.defimpl.SimpleBufferSource;
 import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
 import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.gframe.windows.Window;
+import de.m_marvin.openui.OpenUI;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.flatmono.UtilRenderer;
@@ -16,7 +17,7 @@ import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
 
-public class ResizableGroupBox extends Component<ResourceLocation> {
+public class ResizeFrame extends Component<ResourceLocation> {
 	
 	protected final Window window;
 	protected int grabFrameWidth = 20;
@@ -24,8 +25,16 @@ public class ResizableGroupBox extends Component<ResourceLocation> {
 	protected int grabSideH = 0;
 	protected Vec2d grabOffset = null;
 	
-	public ResizableGroupBox(Window window) {
+	public ResizeFrame(Window window) {
 		this.window = window;
+	}
+	
+	public void setGrabFrameWidth(int grabFrameWidth) {
+		this.grabFrameWidth = grabFrameWidth;
+	}
+	
+	public int getGrabFrameWidth() {
+		return grabFrameWidth;
 	}
 	
 	protected static int glfwSizeValue(int val) {
@@ -42,6 +51,11 @@ public class ResizableGroupBox extends Component<ResourceLocation> {
 	public void setSizeMax(Vec2i sizeMax) {
 		super.setSizeMax(sizeMax);
 		this.window.setSizeLimits(glfwSizeValue(this.sizeMin.x), glfwSizeValue(this.sizeMin.y), glfwSizeValue(this.sizeMax.x), glfwSizeValue(this.sizeMax.y));
+	}
+	
+	@Override
+	public void resetMinSize() {
+		this.setSizeMin(new Vec2i(30, 30));
 	}
 	
 	@Override
@@ -112,7 +126,7 @@ public class ResizableGroupBox extends Component<ResourceLocation> {
 				if (this.sizeMin.y != -1) windowSize.y = Math.max(minSize.y, windowSize.y);
 				if (this.sizeMax.y != -1) windowSize.y = Math.min(maxSize.y, windowSize.y);
 			} else if (this.grabSideH == -1) {
-				int i = Math.max(windowSize.y - maxSize.y, Math.min(windowSize.y - minSize.y, (int) (coursorPos.y - grabOffset.y)));
+				int i = (int) (coursorPos.y - grabOffset.y);
 				if (this.sizeMin.y != -1) i = Math.min(windowSize.y - minSize.y, i);
 				if (this.sizeMax.y != -1) i = Math.max(windowSize.y - maxSize.y, i);
 				windowPos.y += i;
@@ -127,9 +141,8 @@ public class ResizableGroupBox extends Component<ResourceLocation> {
 	
 	@Override
 	public void drawBackground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
-		
-		UtilRenderer.renderFrame(this.size.x, this.size.y, 2, Color.WHITE, bufferSource, matrixStack);
-		
+		if (OpenUI.isDebugDrawEneabled())
+			UtilRenderer.drawFrame(this.size.x, this.size.y, this.grabFrameWidth, new Color(0, 0, 255, 128), bufferSource, matrixStack);
 		super.drawBackground(bufferSource, matrixStack);
 	}
 	
