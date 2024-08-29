@@ -10,6 +10,13 @@ import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.flatmono.UIRenderModes;
 
 public class HoloRenderer {
+
+	public static void drawFrame(int x, int y, int w, int h, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
+		matrixStack.push();
+		matrixStack.translate(x, y, 0);
+		drawFrame(w, h, frameColor, bufferSource, matrixStack);
+		matrixStack.pop();
+	}
 	
 	public static void drawFrame(int w, int h, Color frameColor, IBufferSource<UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 

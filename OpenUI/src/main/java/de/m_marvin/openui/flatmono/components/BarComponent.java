@@ -168,7 +168,7 @@ public class BarComponent extends Component<ResourceLocation> {
 			matrixStack.translate(this.size.x / 2, this.size.y / 2, 0F);
 			if (!this.horizontal) matrixStack.rotateDegrees(0, 0, 90);
 			
-			TextRenderer.renderTextCentered(0, 0, this.title, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+			TextRenderer.drawTextCentered(0, 0, this.title, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 			
 			matrixStack.pop();
 			

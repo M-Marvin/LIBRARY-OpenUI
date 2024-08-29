@@ -17,6 +17,7 @@ public class UIRenderModes {
 	
 	public static final ResourceLocation SHADER_PLAIN_SOLID = new ResourceLocation(WindowFlatMono.NAMESPACE, "ui/plain_solid");
 	public static final ResourceLocation SHADER_TEXTURED_SOLID = new ResourceLocation(WindowFlatMono.NAMESPACE, "ui/textured_solid");
+	public static final ResourceLocation SHADER_TEXTURED_CUTOUT = new ResourceLocation(WindowFlatMono.NAMESPACE, "ui/textured_cutout");
 	public static final ResourceLocation SHADER_PLAIN_CLICKABLE = new ResourceLocation(WindowFlatMono.NAMESPACE, "ui/plain_clickable");
 	public static final ResourceLocation SHADER_PLAIN_CIRCLE = new ResourceLocation(WindowFlatMono.NAMESPACE, "ui/plain_circle");
 	
@@ -72,6 +73,29 @@ public class UIRenderModes {
 					.appand("uv", NumberFormat.FLOAT, 2, false)
 					.appand("color", NumberFormat.FLOAT, 4, false),
 				SHADER_TEXTURED_SOLID,
+				(shader, container) -> {
+					UITextureHandler.ensureSingleTexturesLoaded(container.getActiveTextureLoader(), texture);
+					
+					shader.getUniform("ProjMat").setMatrix4f(container.getProjectionMatrix());
+					shader.getUniform("Texture").setTextureSampler(container.getActiveTextureLoader().getTexture(texture));
+					GLStateManager.enable(GL33.GL_DEPTH_TEST);
+					GLStateManager.enable(GL33.GL_BLEND);
+					GLStateManager.blendFunc(GL33.GL_SRC_ALPHA, GL33.GL_ONE_MINUS_SRC_ALPHA);
+				}
+		);
+	});
+
+	public static UIRenderMode<ResourceLocation> texturedCutout(ResourceLocation texture) {
+		return texturedCutout.apply(texture);
+	}
+	private static final Function<ResourceLocation, UIRenderMode<ResourceLocation>> texturedCutout = Utility.memorize((texture) -> {
+		return new UIRenderMode<ResourceLocation>(
+				RenderPrimitive.TRIANGLES,
+				new VertexFormat()
+					.appand("position", NumberFormat.FLOAT, 3, false)
+					.appand("uv", NumberFormat.FLOAT, 2, false)
+					.appand("color", NumberFormat.FLOAT, 4, false),
+				SHADER_TEXTURED_CUTOUT,
 				(shader, container) -> {
 					UITextureHandler.ensureSingleTexturesLoaded(container.getActiveTextureLoader(), texture);
 					

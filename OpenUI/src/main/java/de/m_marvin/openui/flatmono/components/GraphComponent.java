@@ -235,7 +235,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 				if (ix > this.minValueX) {
 					String text = String.valueOf(ix);
 					int tw = FontRenderer.calculateStringWidth(text, this.font);
-					TextRenderer.renderTextCentered(Math.round((ix - this.minValueX) * gw - tw / 2), this.size.y - th / 2 - 5, text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+					TextRenderer.drawTextCentered(Math.round((ix - this.minValueX) * gw - tw / 2), this.size.y - th / 2 - 5, text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 				}
 				
 			}
@@ -246,7 +246,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 				if (iy > this.minValueY) {
 					String text = String.valueOf(iy);
 					int tw = FontRenderer.calculateStringWidth(text, this.font);
-					TextRenderer.renderTextCentered(tw / 2 + 5, Math.round(this.size.y - (iy - this.minValueY) * gh - th / 2), text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+					TextRenderer.drawTextCentered(tw / 2 + 5, Math.round(this.size.y - (iy - this.minValueY) * gh - th / 2), text, this.font, this.color, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 				}
 				
 			}
@@ -261,7 +261,7 @@ public class GraphComponent extends Component<ResourceLocation> {
 			
 			Vec2f pos = new Vec2f(end).sub(new Vec2f(this.minValueX, this.minValueY)).mul(mult).add(0.0F, (float) this.size.y).clamp(new Vec2f(0, 0), this.size);
 			int xo = FontRenderer.calculateStringWidth(graph.title, this.font) / 2 + 5;
-			TextRenderer.renderTextCentered((int) pos.x - xo, (int) pos.y, graph.title, this.font, graph.color, this.getContainer().getActiveTextureLoader(), bufferSource, matrixStack);			
+			TextRenderer.drawTextCentered((int) pos.x - xo, (int) pos.y, graph.title, this.font, graph.color, this.getContainer().getActiveTextureLoader(), bufferSource, matrixStack);			
 			
 		}
 		

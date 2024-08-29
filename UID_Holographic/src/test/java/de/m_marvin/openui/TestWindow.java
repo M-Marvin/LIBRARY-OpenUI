@@ -28,10 +28,8 @@ public class TestWindow extends WindowHolographic {
 		
 		int grabBorder = gr.getGrabFrameWidth();
 
-		GrabBar g = new GrabBar(this.getMainWindow());
+		GrabBar g = new GrabBar(this.getMainWindow(), this.getWindowName());
 		g.setLayoutData(new BorderLayout.BorderLayoutData(BorderSection.TOP));
-		g.setSizeMin(new Vec2i(60, 20));
-		g.setSizeMax(new Vec2i(-1, 20));
 		g.setMargin(grabBorder, grabBorder, grabBorder, 4);
 		gr.addComponent(g);
 		

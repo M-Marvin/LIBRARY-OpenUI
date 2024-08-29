@@ -383,7 +383,7 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 		String offsetText = this.text.substring(this.textOffset);
 		String renderableText = FontRenderer.limitStringWidth(offsetText, this.font, this.size.x - TEXT_BORDER_GAP * 2);
 		
-		TextRenderer.renderText(TEXT_BORDER_GAP, FRAME_WIDTH, renderableText, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+		TextRenderer.drawText(TEXT_BORDER_GAP, FRAME_WIDTH, renderableText, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 		
 	}
 	

@@ -141,7 +141,7 @@ public class ToggleButtonComponent extends Component<ResourceLocation> {
 		if (this.title != null) {
 			
 			String title = FontRenderer.limitStringWidth(this.title, this.font, this.size.x - BUTTON_MARGIN * 2 - 2);
-			TextRenderer.renderTextCentered(this.size.x / 2, this.size.y / 2, title, this.font, !this.state ? this.color : this.textColor, container.getActiveTextureLoader(), bufferSource, matrixStack);
+			TextRenderer.drawTextCentered(this.size.x / 2, this.size.y / 2, title, this.font, !this.state ? this.color : this.textColor, container.getActiveTextureLoader(), bufferSource, matrixStack);
 			
 		}
 		

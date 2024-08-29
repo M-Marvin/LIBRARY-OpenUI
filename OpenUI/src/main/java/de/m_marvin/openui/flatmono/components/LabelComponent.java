@@ -63,7 +63,7 @@ public class LabelComponent extends Component<ResourceLocation> {
 	@Override
 	public void drawForeground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		TextRenderer.renderTextCentered(this.size.x / 2, this.size.y / 2, this.title, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+		TextRenderer.drawTextCentered(this.size.x / 2, this.size.y / 2, this.title, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 		
 	}
 	

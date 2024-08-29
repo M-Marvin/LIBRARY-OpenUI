@@ -192,11 +192,11 @@ public class PointerDisplayComponent extends Component<ResourceLocation> {
 			int x = (int) (Math.cos(Math.toRadians(i * angleSteps + 137)) * rt) + this.size.x / 2;
 			int y = (int) (Math.sin(Math.toRadians(i * angleSteps + 137)) * rt) + this.size.y / 2;
 			
-			TextRenderer.renderTextCentered(x, y, String.valueOf(value * this.scalaNumberScale), this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+			TextRenderer.drawTextCentered(x, y, String.valueOf(value * this.scalaNumberScale), this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
 			
 		}
 
-		TextRenderer.renderTextCentered(this.size.x / 2, this.size.y * 7/8, this.title, this.titleFont, this.textColor, this.getContainer().getActiveTextureLoader(), bufferSource, matrixStack);
+		TextRenderer.drawTextCentered(this.size.x / 2, this.size.y * 7/8, this.title, this.titleFont, this.textColor, this.getContainer().getActiveTextureLoader(), bufferSource, matrixStack);
 		
 		shiftRenderLayer();
 		
