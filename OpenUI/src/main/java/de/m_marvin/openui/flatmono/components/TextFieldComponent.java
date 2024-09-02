@@ -390,7 +390,7 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 	@Override
 	public void drawForeground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		UtilRenderer.drawFrame(this.size.x, this.size.y, FRAME_WIDTH, this.textColor, bufferSource, matrixStack);
+		UtilRenderer.drawFrame(this.size.x, this.size.y, FRAME_WIDTH, this.color, bufferSource, matrixStack);
 		
 		if (this.isFocused() && this.cursorState) {
 			
