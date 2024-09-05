@@ -21,9 +21,10 @@ import de.m_marvin.openui.core.TextRenderer;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.flatmono.UtilRenderer;
+import de.m_marvin.openui.flatmono.components.text.TextPlane;
 import de.m_marvin.univec.impl.Vec2i;
 
-public class TextFieldComponent extends Component<ResourceLocation> {
+public class AdvancedTextFieldComponent extends Component<ResourceLocation> {
 	
 	public static final int FRAME_WIDTH = 1;
 	public static final int TEXT_BORDER_GAP = 2;
@@ -31,8 +32,8 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 	
 	protected Color color;
 	protected Color textColor;
-	protected Font font = DEFAULT_FONT;
-	protected String text = "";
+	protected TextPlane text = new TextPlane(DEFAULT_FONT);
+	
 	protected int maxLength = 64;
 	protected Consumer<String> changeCallback = s -> {};
 	
@@ -43,20 +44,20 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 	protected int selectionStart = -1;
 	protected int selectionEnd = -1;
 	
-	public TextFieldComponent(Color textColor, Color color) {
+	public AdvancedTextFieldComponent(Color textColor, Color color) {
 		this.color = color;
 		this.textColor = textColor;
-
+		
 		setMargin(5, 5, 5, 5);
-		setSize(new Vec2i(120, FontRenderer.getFontHeight(this.font) + 2));
+		setSize(new Vec2i(120, FontRenderer.getFontHeight(getFont()) + 2));
 		fixSize();
 	}
 	
-	public TextFieldComponent(Color textColor) {
+	public AdvancedTextFieldComponent(Color textColor) {
 		this(textColor, Color.BLACK);
 	}
 	
-	public TextFieldComponent() {
+	public AdvancedTextFieldComponent() {
 		this(Color.WHITE);
 	}
 	
@@ -88,46 +89,26 @@ public class TextFieldComponent extends Component<ResourceLocation> {
 		return changeCallback;
 	}
 	
-	public int getMaxLength() {
-		return maxLength;
-	}
-	
-	public void setMaxLength(int maxLength) {
-		this.maxLength = maxLength;
-		if (this.text.length() > maxLength) {
-			this.text = this.text.substring(0, maxLength);
-			this.redraw();
-		}
-	}
-	
 	public Font getFont() {
-		return font;
+		return this.text.getDefaultFont();
 	}
 	
 	public void setFont(Font font) {
 		assert font != null : "Argument can not be null!";
-		this.font = font;
+		this.text.setDefaultFont(font);
 		this.redraw();
 	}
 	
 	public String getText() {
-		return text;
+		return null;
 	}
 	
 	public void setText(String text) {
-		assert text != null : "Argument can not be null!";
-		this.text = text;
-		this.redraw();
+		
 	}
 	
 	public void setCursorPosition(int charIndex) {
-		this.cursorPosition = Math.max(0, Math.min(this.text.length(), charIndex));
-		if (this.textOffset > this.cursorPosition - 1) {
-			this.textOffset = Math.max(this.cursorPosition - 1, 0);
-		} else {
-			int lastIndex = this.textOffset + FontRenderer.limitStringWidth(this.text.substring(this.textOffset), this.font, this.size.x - TEXT_BORDER_GAP * 2).length();
-			if (lastIndex - 1 < this.cursorPosition && lastIndex < this.text.length()) this.textOffset += Math.min(this.cursorPosition - (lastIndex - 1), this.text.length() - this.textOffset);
-		}
+		
 	}
 	
 	public void moveCursorNear(int xPos) {

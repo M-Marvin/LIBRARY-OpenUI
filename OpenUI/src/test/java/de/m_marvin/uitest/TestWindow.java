@@ -8,6 +8,7 @@ import de.m_marvin.openui.core.layout.BorderLayout.BorderSection;
 import de.m_marvin.openui.core.layout.BorderLayout.CornerStretch;
 import de.m_marvin.openui.core.layout.GridLayout;
 import de.m_marvin.openui.flatmono.WindowFlatMono;
+import de.m_marvin.openui.flatmono.components.AdvancedTextFieldComponent;
 import de.m_marvin.openui.flatmono.components.BarComponent;
 import de.m_marvin.openui.flatmono.components.ButtonComponent;
 import de.m_marvin.openui.flatmono.components.GraphComponent;
@@ -191,6 +192,10 @@ public class TestWindow extends WindowFlatMono {
 		graph2.getDataPoints().add(new Vec2d(40, -30));
 		graph2.getDataPoints().add(new Vec2d(65, 00));
 		graph2.getDataPoints().add(new Vec2d(70, 23));
+		
+		AdvancedTextFieldComponent atfc = new AdvancedTextFieldComponent(Color.white, Color.white);
+		atfc.setLayoutData(new GridLayout.GridLayoutData(0, 0));
+		b1.addComponent(atfc);
 		
 		b1.autoSetMaxAndMinSize();
 		b1.getSizeMax().setX(0);

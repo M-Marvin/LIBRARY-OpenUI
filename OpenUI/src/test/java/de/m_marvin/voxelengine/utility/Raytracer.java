@@ -18,7 +18,7 @@ public class Raytracer {
 	public static Vec3f getCameraRay(Vec2d coursorPosition, float clipPlaneZ, Vec2f windowSize, Matrix4f viewMatrix, Matrix4f projectionMatrix) {
 
 		Matrix4f transformMatrix = projectionMatrix.mul(viewMatrix);
-		transformMatrix.invert();
+		transformMatrix.invertI();
 		
 		Vec4f clip = new Vec4f((float) coursorPosition.x, (float) coursorPosition.y, clipPlaneZ, 1);
 		
