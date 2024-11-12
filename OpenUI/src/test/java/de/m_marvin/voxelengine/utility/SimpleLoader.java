@@ -12,8 +12,7 @@ import de.m_marvin.gframe.resources.IClearableLoader;
 import de.m_marvin.gframe.resources.IResourceProvider;
 import de.m_marvin.gframe.resources.ISourceFolder;
 import de.m_marvin.gframe.resources.ResourceLoader;
-import de.m_marvin.simplelogging.printing.LogType;
-import de.m_marvin.simplelogging.printing.Logger;
+import de.m_marvin.simplelogging.Log;
 
 public abstract class SimpleLoader<R extends IResourceProvider<R>, FE extends ISourceFolder, T> implements IClearableLoader {
 	
@@ -38,8 +37,7 @@ public abstract class SimpleLoader<R extends IResourceProvider<R>, FE extends IS
 		try {
 			loadAllIn0(folderLocation);
 		} catch (IOException e) {
-			Logger.defaultLogger().logWarn("Failed to load some of the files from " + folderLocation.toString() + "!");
-			Logger.defaultLogger().printException(LogType.WARN, e);
+			Log.defaultLogger().warn("Failed to load some of the files from " + folderLocation.toString() + "!", e);
 		}
 	}
 	
@@ -72,8 +70,7 @@ public abstract class SimpleLoader<R extends IResourceProvider<R>, FE extends IS
 			try {
 				cache.put(location, load(location));
 			} catch (IOException e) {
-				Logger.defaultLogger().logWarn("Failed to load " + location.toString());
-				Logger.defaultLogger().printException(LogType.WARN, e);
+				Log.defaultLogger().warn("Failed to load " + location.toString(), e);
 				return null;
 			}
 		}
@@ -86,12 +83,11 @@ public abstract class SimpleLoader<R extends IResourceProvider<R>, FE extends IS
 				cache.put(location, object);
 				return true;
 			} else {
-				Logger.defaultLogger().logWarn("Failed to save " + location.toString());
+				Log.defaultLogger().warn("Failed to save " + location.toString());
 				return false;
 			}
 		} catch (IOException e) {
-			Logger.defaultLogger().logWarn("Failed to save " + location.toString());
-			Logger.defaultLogger().printException(LogType.WARN, e);
+			Log.defaultLogger().warn("Failed to save " + location.toString(), e);
 			return false;
 		}
 	}

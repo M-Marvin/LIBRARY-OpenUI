@@ -10,7 +10,7 @@ import de.m_marvin.archiveutility.IArchiveAccess;
 import de.m_marvin.archiveutility.access.MultiArchiveAccess;
 import de.m_marvin.gframe.resources.ISourceFolder;
 import de.m_marvin.gframe.resources.ResourceLoader;
-import de.m_marvin.simplelogging.printing.Logger;
+import de.m_marvin.simplelogging.Log;
 
 public class UIResourceFolder implements ISourceFolder {
 
@@ -29,8 +29,7 @@ public class UIResourceFolder implements ISourceFolder {
 		try {
 			archiveAccess = ArchiveAccess.getClasspathAccess();
 		} catch (IOException e) {
-			Logger.defaultLogger().logError("failed to get jar access!");
-			Logger.defaultLogger().printExceptionError(e);
+			Log.defaultLogger().error("failed to get jar access!", e);
 		}
 	}
 	

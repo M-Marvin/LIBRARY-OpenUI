@@ -1,7 +1,5 @@
 package de.m_marvin.voxelengine;
 
-import java.io.File;
-
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL33;
 
@@ -18,9 +16,7 @@ import de.m_marvin.gframe.shaders.ShaderLoader;
 import de.m_marvin.gframe.textures.TextureLoader;
 import de.m_marvin.gframe.translation.Camera;
 import de.m_marvin.gframe.windows.Window;
-import de.m_marvin.simplelogging.filehandling.LogFileHandler;
-import de.m_marvin.simplelogging.printing.LogType;
-import de.m_marvin.simplelogging.printing.Logger;
+import de.m_marvin.simplelogging.Log;
 import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.univec.impl.Vec3i;
@@ -39,13 +35,13 @@ import de.m_marvin.voxelengine.world.VoxelStructure;
 
 public class VoxelEngine {
 	
-	private static LogFileHandler logFileHandler;
+//	private static LogFileHandler logFileHandler;
 	
 	public static void main(String... args) {
 
-		logFileHandler = new LogFileHandler(new File(new File(ResourceLoader.getRuntimeFolder()).getParentFile().getParentFile(), "run/logs"), "EngineTest");
-		Logger logger = logFileHandler.beginLogging();
-		Logger.setDefaultLogger(logger);
+//		logFileHandler = new LogFileHandler(new File(new File(ResourceLoader.getRuntimeFolder()).getParentFile().getParentFile(), "run/logs"), "EngineTest");
+//		Logger logger = logFileHandler.beginLogging();
+//		Logger.setDefaultLogger(logger);
 		
 		// Redirect run folder (since all resources are located in the test folder)
 		ResourceLoader.redirectRuntimeFolder(VoxelEngine.class.getClassLoader().getResource("").getPath().replace("bin/main/", "run/"));
@@ -54,14 +50,13 @@ public class VoxelEngine {
 		try {
 			new VoxelEngine().run();
 		} catch (Exception e) {
-			Logger.defaultLogger().logError("CRASH", "The engine has crashed!");
-			Logger.defaultLogger().printException(LogType.ERROR, "CRASH", e);
+			Log.defaultLogger().error("CRASH", "The engine has crashed!", e);
 		}
 		
 		// Terminate logger
-		if (logFileHandler != null) {
-			logFileHandler.endLogging();
-		}
+//		if (logFileHandler != null) {
+//			logFileHandler.endLogging();
+//		}
 		
 	}
 	
@@ -109,7 +104,7 @@ public class VoxelEngine {
 	
 	public void run() {
 		
-		Logger.defaultLogger().logInfo("Start!");
+		Log.defaultLogger().info("Start!");
 		
 		// Setup resource loaders
 		resourceLoader = new ResourceLoader<>();
@@ -133,7 +128,7 @@ public class VoxelEngine {
 		mainWindow = new Window(1000, 600, "Engine Test");
 		mainCamera = new Camera(new Vec3f(0F, 0F, 0F), new Vec3f(0F, 0F, 0F));
 		
-		Logger.defaultLogger().logInfo("Start Render-Thread");
+		Log.defaultLogger().info("Start Render-Thread");
 		
 		// Start and initialize render thread
 		startRenderThread(() -> {
@@ -164,27 +159,26 @@ public class VoxelEngine {
 		// Setup main thread
 		setupUpdateThread();
 		
-		Logger.defaultLogger().logInfo("Start game loop");
+		Log.defaultLogger().info("Start game loop");
 		
 		// Start game loop
 		startUpdateLoop();
 
-		Logger.defaultLogger().logInfo("Stop, wait for Render-Thread to shutdown");
+		Log.defaultLogger().info("Stop, wait for Render-Thread to shutdown");
 		
 		// Wait for render thread to terminate
 		synchronized (renderThread) {
 			try {
 				renderThread.wait();
 			} catch (InterruptedException e) {
-				Logger.defaultLogger().logError("Fatel error on termination of application!");
-				Logger.defaultLogger().printException(LogType.ERROR, e);
+				Log.defaultLogger().error("Fatel error on termination of application!", e);
 			}
 		}
 		
 		// Terminate GLFW
 		GLFWStateManager.terminate();
 		
-		Logger.defaultLogger().logInfo("Exit");
+		Log.defaultLogger().info("Exit");
 		
 	}
 	
@@ -193,8 +187,7 @@ public class VoxelEngine {
 			try {
 				threadTask.run();
 			} catch (Exception e) {
-				Logger.defaultLogger().logError("CRASH", "Render thread crashed!");
-				Logger.defaultLogger().printException(LogType.ERROR, "CRASH", e);
+				Log.defaultLogger().errort("CRASH", "Render thread crashed!", e);
 			}
 		}, "RenderThread");
 		this.renderThread.start();
@@ -386,8 +379,7 @@ public class VoxelEngine {
 				clientReloadState = ReloadState.COMPLETED;
 				
 			} catch (Exception e) {
-				Logger.defaultLogger().logWarn("Failed to reload resources! " + e.getMessage());
-				Logger.defaultLogger().printException(LogType.WARN, "assets", e);
+				Log.defaultLogger().warn("Failed to reload resources!", e);
 				clientReloadState = ReloadState.FAILED;
 			}
 			

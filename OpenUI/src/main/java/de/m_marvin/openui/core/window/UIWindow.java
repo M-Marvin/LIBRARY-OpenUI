@@ -15,7 +15,7 @@ import de.m_marvin.gframe.textures.TextureLoader;
 import de.m_marvin.gframe.windows.Window;
 import de.m_marvin.gframe.windows.Window.WindowEventType;
 import de.m_marvin.openui.core.components.Compound;
-import de.m_marvin.simplelogging.printing.Logger;
+import de.m_marvin.simplelogging.Log;
 import de.m_marvin.univec.impl.Vec2d;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
@@ -95,8 +95,7 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 			return CompletableFuture.completedFuture(true);
 		this.shouldClose = false;
 		this.startup = new CompletableFuture<Boolean>().orTimeout(10, TimeUnit.SECONDS).exceptionally(e -> {
-			Logger.defaultLogger().logError("Failed to start window:");
-			Logger.defaultLogger().printExceptionError(e);
+			Log.defaultLogger().error("Failed to start window:", e);
 			return false;
 		});
 		this.renderThread = new Thread(this::init, "RenderThread[" + this.windowName + "]");
@@ -110,8 +109,7 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		return this.startup.thenApply(initialized -> {
 			if (!initialized) return true;
 			this.shutdown = new CompletableFuture<Boolean>().orTimeout(10, TimeUnit.SECONDS).exceptionally(e -> {
-				Logger.defaultLogger().logError("Failed to stop window:");
-				Logger.defaultLogger().printExceptionError(e);
+				Log.defaultLogger().error("Failed to stop window:", e);
 				return false;
 			});
 			this.shouldClose = true;
@@ -295,7 +293,7 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 		if (this.adjustMaxScale) {
 			Vec2i compoundSize = this.uiContainer.getRootCompound().getSizeMin().copy();
 			if (compoundSize.x == 0 || compoundSize.y == 0) {
-				Logger.defaultLogger().logError("Root min size not set, can not adjust scale!");
+				Log.defaultLogger().warn("Root min size not set, can not adjust scale!");
 				return;
 			}
 			float compoundRatio = compoundSize.x / (float) compoundSize.y; 

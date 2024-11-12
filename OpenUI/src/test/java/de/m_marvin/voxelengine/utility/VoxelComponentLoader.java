@@ -19,8 +19,7 @@ import de.m_marvin.gframe.resources.IResourceProvider;
 import de.m_marvin.gframe.resources.ISourceFolder;
 import de.m_marvin.gframe.resources.ResourceLoader;
 import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
-import de.m_marvin.simplelogging.printing.LogType;
-import de.m_marvin.simplelogging.printing.Logger;
+import de.m_marvin.simplelogging.Log;
 import de.m_marvin.voxelengine.VoxelEngine;
 import de.m_marvin.voxelengine.world.VoxelComponent;
 import de.m_marvin.voxelengine.world.VoxelMaterial;
@@ -76,8 +75,7 @@ public class VoxelComponentLoader<R extends IResourceProvider<R>, FE extends ISo
 		try {
 			return load(new File(resourceLoader.resolveLocation(sourceFolder, location) + "." + VOXEL_COMPONENT_FORMAT));
 		} catch (IOException e) {
-			Logger.defaultLogger().logError("Failed to load component '" + location.nameString() + "'!");
-			Logger.defaultLogger().printException(LogType.ERROR, e);
+			Log.defaultLogger().error("Failed to load component '" + location.nameString() + "'!", e);
 			return null;
 		}
 	}
@@ -86,8 +84,7 @@ public class VoxelComponentLoader<R extends IResourceProvider<R>, FE extends ISo
 		try {
 			return save(new File(resourceLoader.resolveLocation(sourceFolder, location) + "." + VOXEL_COMPONENT_FORMAT), component);
 		} catch (IOException e) {
-			Logger.defaultLogger().logError("Failed to save component '" + location.nameString() + "'!");
-			Logger.defaultLogger().printException(LogType.ERROR, e);
+			Log.defaultLogger().error("Failed to save component '" + location.nameString() + "'!", e);
 			return false;
 		}
 	}

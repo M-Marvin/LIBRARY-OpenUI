@@ -5,14 +5,13 @@ import java.net.URISyntaxException;
 
 import de.m_marvin.gframe.GLFWStateManager;
 import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
-import de.m_marvin.simplelogging.printing.Logger;
 
 public class UITest {
 
 	public static void main(String... args) throws URISyntaxException, IOException, InterruptedException {
 		
 		// Start new logger
-		Logger.setDefaultLogger(new Logger());
+		//Logger.setDefaultLogger(new Logger());
 		
 		// Redirect run folder (since all resources are located in the test folder)
 		//ResourceLoader.redirectRuntimeFolder(VoxelEngine.class.getClassLoader().getResource("").getPath().replace("bin/main/", "run/"));

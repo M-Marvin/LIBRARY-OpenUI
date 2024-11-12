@@ -24,7 +24,7 @@ import de.m_marvin.gframe.translation.PoseStack;
 import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.core.components.Compound;
-import de.m_marvin.simplelogging.printing.Logger;
+import de.m_marvin.simplelogging.Log;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
@@ -170,8 +170,7 @@ public class UIContainer<R extends IResourceProvider<R>> {
 				try {
 					this.renderThreadTasks.poll().run();
 				} catch (Throwable e) {
-					Logger.defaultLogger().logError("Exception was thrown when executing render thread task:");
-					Logger.defaultLogger().printExceptionError(e);
+					Log.defaultLogger().warn("Exception was thrown when executing render thread task:", e);
 				}
 			}
 		}

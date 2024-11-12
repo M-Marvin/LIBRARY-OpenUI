@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import de.m_marvin.gframe.fontrendering.FontRenderer;
 
 public class TextPlane {
 	
@@ -29,7 +32,7 @@ public class TextPlane {
 		public TextLine(CharSequence text) {
 			this();
 			for (int i = 0; i < text.length(); i++) {
-				this.line.add(new LineCharacter(text.charAt(i), 0)); // TODO
+				this.line.add(new LineCharacter(text.charAt(i), 0)); // TODO font for typed text
 			}
 		}
 		
@@ -45,13 +48,60 @@ public class TextPlane {
 			}
 		}
 
-		public record LineCharacter(char character, int fontId) {
+		public class LineCharacter {
+			
+			public char character;
+			public int fontId;
+			
+			public LineCharacter(char character, int fontId) {
+				this.character = character;
+				this.fontId = fontId;
+			}
+			
 			public LineCharacter(LineCharacter character) {
 				this(character.character, character.fontId);
 			}
+			
+			public Font font() {
+				return TextPlane.this.fonts.get(this.fontId);
+			}
+			
+			public int getCharHeight() {
+				return getCharacterHeight(font());
+			}
+			
+			public int getCharWidth() {
+				return getCharacterWidth(this.character, font());
+			}
+			
+			@Override
+			public String toString() {
+				return String.format("%c[%d]", this.character, this.fontId);
+			}
+			
 		}
 		
 		protected List<LineCharacter> line;
+		protected int height = -1;
+		protected int width = -1;
+		
+		public int getLineHeight() {
+			if (this.height == -1) {
+				for (LineCharacter c : line) 
+					if (c.getCharHeight() > this.height) this.height = c.getCharHeight();
+				if (this.height == -1) 
+					this.height = getCharacterHeight(TextPlane.this.getDefaultFont());
+			}
+			return this.height;
+		}
+
+		public int getLineWidth() {
+			if (this.width == -1) {
+				for (LineCharacter c : line) 
+					if (c.getCharHeight() > this.width) this.width = c.getCharWidth();
+			}
+			return this.width;
+		}
 		
 		@Override
 		public int length() {
@@ -77,13 +127,15 @@ public class TextPlane {
 				throw new LineIndexOutOfBoundsException(index, this.line.size(), true);
 			if (text instanceof TextLine textSequence) {
 				for (int i = 0; i < text.length(); i++) {
-					this.line.add(index + i, new LineCharacter(textSequence.lineCharAt(index)));
+					this.line.add(index + i, new LineCharacter(textSequence.lineCharAt(i)));
 				}
 			} else {
 				for (int i = 0; i < text.length(); i++) {
-					this.line.add(index + i, new LineCharacter(text.charAt(index), 0)); // TODO
+					this.line.add(index + i, new LineCharacter(text.charAt(i), 0)); // TODO font for typed text
 				}
 			}
+			this.height = -1;
+			this.width = -1;
 		}
 		
 		public void remove(int index, int len) {
@@ -92,6 +144,13 @@ public class TextPlane {
 			for (int i = 0; i < len; i++) {
 				this.line.remove(index);
 			}
+			this.height = -1;
+			this.width = -1;
+		}
+		
+		@Override
+		public String toString() {
+			return this.line.stream().map(c -> String.valueOf(c.character)).collect(Collectors.joining());
 		}
 		
 	}
@@ -107,6 +166,8 @@ public class TextPlane {
 	protected Map<Integer, Font> fonts;
 	protected List<TextLine> lines;
 	protected int charCount = -1;
+	
+	// TODO text limits
 	protected int lineLimit = -1;
 	protected int columnLimite = -1;
 	protected int charCountLimit = -1;
@@ -166,10 +227,22 @@ public class TextPlane {
 	
 	public void insertMultiLine(CharSequence text, int line, int column) {
 		List<CharSequence> lines = splitLines(text);
+		
+		// Insert at first line and store right side content after insert position
+		TextLine sl = this.getLine(line);
+		TextLine t = (TextLine) sl.subSequence(column, sl.length());
+		if (column < sl.length()) sl.remove(column, sl.length() - column);
 		insert(lines.get(0), line, column);
+		
+		// Insert remaining lines
 		for (int i = 1; i < lines.size(); i++) {
 			this.lines.add(line + i, new TextLine(lines.get(i)));
 		}
+		
+		// Insert stored part at end of last line
+		TextLine el = this.lines.get(lines.size() + line - 1);
+		el.insert(t, el.length());
+		
 		this.charCount = -1;
 	}
 	
@@ -183,7 +256,7 @@ public class TextPlane {
 			} else {
 				// remove with line feed (combine remainder with next line)
 				int ll = textLine.length() - column;
-				textLine.remove(column, ll);
+				if (column < textLine.length()) textLine.remove(column, ll);
 				len -= ll + 1;
 				if (line + 1 < this.lines.size()) {
 					textLine.insert(getLine(line + 1), column);
@@ -249,6 +322,21 @@ public class TextPlane {
 			lines.add(text.subSequence(0, 0));
 		}
 		return lines;
+	}
+	
+	public static int getCharacterWidth(char character, Font font) {
+		return FontRenderer.calculateStringWidth(String.valueOf(character), font);
+	}
+	
+	public static int getCharacterHeight(Font font) {
+		return FontRenderer.getFontHeight(font);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		this.lines.forEach(l -> sb.append(l.toString()).append("\n"));
+		return sb.toString();
 	}
 	
 }
