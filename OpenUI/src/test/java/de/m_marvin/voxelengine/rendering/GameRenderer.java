@@ -12,6 +12,7 @@ import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
 import de.m_marvin.gframe.shaders.ShaderInstance;
 import de.m_marvin.gframe.textures.maps.AbstractTextureMap;
 import de.m_marvin.gframe.translation.PoseStack;
+import de.m_marvin.unimat.MatUtil;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec2i;
@@ -64,7 +65,7 @@ public class GameRenderer {
 	
 	public void updatePerspective() {
 		Vec2i windowSize = VoxelEngine.getInstance().getMainWindow().getSize();
-		this.projectionMatrix = Matrix4f.perspective(this.fov, windowSize.x / (float) windowSize.y, 1, 1000);
+		this.projectionMatrix = MatUtil.perspectiveF(this.fov, windowSize.x / (float) windowSize.y, 1, 1000);
 		executeOnRenderStage(RenderStage.UTIL, false, () -> GLStateManager.resizeViewport(0, 0, windowSize.x, windowSize.y));
 	}
 	
@@ -193,7 +194,7 @@ public class GameRenderer {
 						
 						Vec3f position = structure.getPosition();
 						Quaternionf rotation = structure.getRigidBody().getRotation();
-						Matrix4f translationMatrix = Matrix4f.translateMatrix(position.x, position.y, position.z).mul(rotation);
+						Matrix4f translationMatrix = MatUtil.translateMatrixF(position).mul(rotation);
 						shader.getUniform("TranMat").setMatrix4f(translationMatrix);
 						
 						buffer.bind();
