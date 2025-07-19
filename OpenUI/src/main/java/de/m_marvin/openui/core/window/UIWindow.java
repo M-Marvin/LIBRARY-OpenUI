@@ -134,7 +134,7 @@ public abstract class UIWindow<R extends IResourceProvider<R>, S extends ISource
 	}
 	
 	public boolean isInitialized() {
-		return this.startup == null ? false : this.startup.join();
+		return this.startup == null ? false : this.startup.isDone() ? this.startup.join() : false;
 	}
 	
 	protected void initWindow() {
