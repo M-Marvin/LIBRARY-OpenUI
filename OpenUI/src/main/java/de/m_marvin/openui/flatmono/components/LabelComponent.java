@@ -17,6 +17,7 @@ public class LabelComponent extends Component<ResourceLocation> {
 	protected String title;
 	protected Font font = DEFAULT_FONT;
 	protected Color textColor;
+	protected boolean centerText = true;
 	
 	public LabelComponent(String title, Color textColor) {
 		this.title = title;
@@ -41,6 +42,10 @@ public class LabelComponent extends Component<ResourceLocation> {
 		this.redraw();
 	}
 	
+	public void setCenterText(boolean centerText) {
+		this.centerText = centerText;
+	}
+	
 	public Color getTextColor() {
 		return textColor;
 	}
@@ -63,7 +68,11 @@ public class LabelComponent extends Component<ResourceLocation> {
 	@Override
 	public void drawForeground(SimpleBufferSource<ResourceLocation, UIRenderMode<ResourceLocation>> bufferSource, PoseStack matrixStack) {
 		
-		TextRenderer.drawTextCentered(this.size.x / 2, this.size.y / 2, this.title, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+		if (centerText) {
+			TextRenderer.drawTextCentered(this.size.x / 2, this.size.y / 2, this.title, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+		} else {
+			TextRenderer.drawText(0, 0, this.title, this.font, this.textColor, this.container.getActiveTextureLoader(), bufferSource, matrixStack);
+		}
 		
 	}
 	

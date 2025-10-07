@@ -2,6 +2,8 @@ package de.m_marvin.openui.core.components;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import de.m_marvin.gframe.buffers.defimpl.SimpleBufferSource;
@@ -91,7 +93,7 @@ public class Compound<R extends IResourceProvider<R>> {
 	}
 	
 	public boolean isVisible() {
-		return visible && this.size.x > 0 && this.size.y > 0;
+		return container != null && visible && this.size.x > 0 && this.size.y > 0;
 	}
 	
 	public void setup() {}
@@ -108,6 +110,18 @@ public class Compound<R extends IResourceProvider<R>> {
 		this.container.deleteVAOs(childComponent);
 		childComponent.setContainer(null);
 		this.childComponents.remove(childComponent);
+	}
+	
+	public void removeComponents(Collection<Compound<R>> childComponents) {
+		childComponents.forEach(this::removeComponent);
+	}
+	
+	public void clearComponents() {
+		for (var component : this.childComponents) {
+			this.container.deleteVAOs(component);
+			component.setContainer(null);
+		}
+		this.childComponents.clear();
 	}
 	
 	public void setLayout(Layout<?> layout) {
@@ -140,7 +154,7 @@ public class Compound<R extends IResourceProvider<R>> {
 	}
 	
 	public List<Compound<R>> getChildComponents() {
-		return childComponents;
+		return Collections.unmodifiableList(childComponents);
 	}
 	
 	public void setSizeMax(Vec2i sizeMax) {
