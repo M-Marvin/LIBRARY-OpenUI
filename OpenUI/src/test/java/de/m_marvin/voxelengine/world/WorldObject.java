@@ -4,7 +4,6 @@ import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.linearmath.Transform;
 
 import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
-import de.m_marvin.unimat.MatUtil;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.univec.impl.Vec3f;
 import de.m_marvin.voxelengine.physicengine.d3.physic.IRigidObject;
@@ -42,7 +41,7 @@ public abstract class WorldObject implements IRigidObject {
 	}
 
 	public Matrix4f getModelTranslation() {
-		return this.rigidBody.getTranslation().mul(MatUtil.translateMatrixF(getModelOffset()));
+		return this.rigidBody.getTranslation().mul(Matrix4f.translate(getModelOffset()));
 	}
 	
 }

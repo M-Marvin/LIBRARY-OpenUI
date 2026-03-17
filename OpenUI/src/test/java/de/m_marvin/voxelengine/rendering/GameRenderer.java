@@ -12,7 +12,6 @@ import de.m_marvin.gframe.resources.defimpl.ResourceLocation;
 import de.m_marvin.gframe.shaders.ShaderInstance;
 import de.m_marvin.gframe.textures.maps.AbstractTextureMap;
 import de.m_marvin.gframe.translation.PoseStack;
-import de.m_marvin.unimat.MatUtil;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.unimat.impl.Quaternionf;
 import de.m_marvin.univec.impl.Vec2i;
@@ -65,7 +64,7 @@ public class GameRenderer {
 	
 	public void updatePerspective() {
 		Vec2i windowSize = VoxelEngine.getInstance().getMainWindow().getSize();
-		this.projectionMatrix = MatUtil.perspectiveF(this.fov, windowSize.x / (float) windowSize.y, 1, 1000);
+		this.projectionMatrix = Matrix4f.perspective(this.fov, windowSize.x / (float) windowSize.y, 1, 1000);
 		executeOnRenderStage(RenderStage.UTIL, false, () -> GLStateManager.resizeViewport(0, 0, windowSize.x, windowSize.y));
 	}
 	
@@ -194,7 +193,7 @@ public class GameRenderer {
 						
 						Vec3f position = structure.getPosition();
 						Quaternionf rotation = structure.getRigidBody().getRotation();
-						Matrix4f translationMatrix = MatUtil.translateMatrixF(position).mul(rotation);
+						Matrix4f translationMatrix = Matrix4f.translate(position).mul(Matrix4f.rotation(rotation));
 						shader.getUniform("TranMat").setMatrix4f(translationMatrix);
 						
 						buffer.bind();
@@ -241,55 +240,55 @@ public class GameRenderer {
 	}
 	
 	public static void drawComponent(BufferBuilder buffer, PoseStack poseStack, RenderType renderLayer, VoxelComponent component, float r, float g, float b, float a) {
-		
-		AbstractTextureMap<ResourceLocation> texture = VoxelEngine.getInstance().getTextureLoader().getTextureMap(MATERIAL_ATLAS);
-		List<int[][][]> voxelGroups = component.getVoxels();
-		Quaternionf orientation = new Quaternionf(poseStack.last().normal());
-		
-		poseStack.push();
-		poseStack.translate(component.getCenterOfShape().mul(-1F));
-		
-		for (int[][][] voxels : voxelGroups) {
-			for (int x = 0; x < voxels.length; x++) {
-				int [][] voxelSlice = voxels[x];
-				for (int y = 0; y < voxelSlice.length; y++) {
-					int [] voxelRow = voxelSlice[y];
-					for (int z = 0; z < voxelRow.length; z++) {
-						int voxelId = voxelRow[z];
-						
-						if (voxelId > 0) {
-							
-							byte sideState = 0;
-							if (z > 0 ? voxels[x][y][z - 1] == 0 : true)						sideState += 1; // North
-							if (z < voxelRow.length - 1 ? voxels[x][y][z + 1] == 0 : true)		sideState += 2; // South
-							if (x > 0 ? voxels[x - 1][y][z] == 0 : true)						sideState += 4; // East
-							if (x < voxels.length - 1 ? voxels[x + 1][y][z] == 0 : true)		sideState += 8; // West
-							if (y < voxelSlice.length - 1 ? voxels[x][y + 1][z] == 0 : true)	sideState += 16; // Up
-							if (y > 0 ? voxels[x][y - 1][z] == 0 : true)						sideState += 32; // Down
-							
-							VoxelMaterial material = component.getMaterial(voxelId);
-							
-							if (sideState > 0 && material.renderLayer().equals(renderLayer)) {
-								
-								ResourceLocation textureName = material.texture();
-								texture.activateTexture(textureName);
-								Vec4f texUV = texture.getUV();
-								int texWidth = (int) (texture.getImageWidth() * material.pixelScale());
-								int texHeight = (int) (texture.getImageHeight() * material.pixelScale());
-								
-								buffer.vertex(poseStack, x, y, z).quatf(orientation).vec3i(x, y, z).nextElement().putInt(sideState).color(r, g, b, a).vec4f(texUV.x, texUV.y, texUV.z, texUV.w).vec2i(texWidth, texHeight).endVertex();
-								
-							}
-							
-						}
-						
-					}
-				}
-			}
-		}
-		
-		poseStack.pop();
-		
+//		
+//		AbstractTextureMap<ResourceLocation> texture = VoxelEngine.getInstance().getTextureLoader().getTextureMap(MATERIAL_ATLAS);
+//		List<int[][][]> voxelGroups = component.getVoxels();
+//		Quaternionf orientation = new Quaternionf(poseStack.last().normal());
+//		
+//		poseStack.push();
+//		poseStack.translate(component.getCenterOfShape().mul(-1F));
+//		
+//		for (int[][][] voxels : voxelGroups) {
+//			for (int x = 0; x < voxels.length; x++) {
+//				int [][] voxelSlice = voxels[x];
+//				for (int y = 0; y < voxelSlice.length; y++) {
+//					int [] voxelRow = voxelSlice[y];
+//					for (int z = 0; z < voxelRow.length; z++) {
+//						int voxelId = voxelRow[z];
+//						
+//						if (voxelId > 0) {
+//							
+//							byte sideState = 0;
+//							if (z > 0 ? voxels[x][y][z - 1] == 0 : true)						sideState += 1; // North
+//							if (z < voxelRow.length - 1 ? voxels[x][y][z + 1] == 0 : true)		sideState += 2; // South
+//							if (x > 0 ? voxels[x - 1][y][z] == 0 : true)						sideState += 4; // East
+//							if (x < voxels.length - 1 ? voxels[x + 1][y][z] == 0 : true)		sideState += 8; // West
+//							if (y < voxelSlice.length - 1 ? voxels[x][y + 1][z] == 0 : true)	sideState += 16; // Up
+//							if (y > 0 ? voxels[x][y - 1][z] == 0 : true)						sideState += 32; // Down
+//							
+//							VoxelMaterial material = component.getMaterial(voxelId);
+//							
+//							if (sideState > 0 && material.renderLayer().equals(renderLayer)) {
+//								
+//								ResourceLocation textureName = material.texture();
+//								texture.activateTexture(textureName);
+//								Vec4f texUV = texture.getUV();
+//								int texWidth = (int) (texture.getImageWidth() * material.pixelScale());
+//								int texHeight = (int) (texture.getImageHeight() * material.pixelScale());
+//								
+//								buffer.vertex(poseStack, x, y, z).quatf(orientation).vec3i(x, y, z).nextElement().putInt(sideState).color(r, g, b, a).vec4f(texUV.x, texUV.y, texUV.z, texUV.w).vec2i(texWidth, texHeight).endVertex();
+//								
+//							}
+//							
+//						}
+//						
+//					}
+//				}
+//			}
+//		}
+//		
+//		poseStack.pop();
+//		
 	}
 	
 	public ResourceLocation getLevelShader() {

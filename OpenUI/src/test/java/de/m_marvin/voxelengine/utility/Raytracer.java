@@ -29,7 +29,7 @@ public class Raytracer {
 		clip.y = clip.y * -2 + 1;
 		clip.z = clip.z * 2 - 1;
 		
-		clip = (Vec4f) transformMatrix.translate(clip);
+		clip = (Vec4f) transformMatrix.transformVec4(clip);
 		
 		clip.x /= clip.w;
 		clip.y /= clip.w;

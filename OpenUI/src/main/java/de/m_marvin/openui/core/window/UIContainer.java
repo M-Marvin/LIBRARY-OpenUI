@@ -25,7 +25,6 @@ import de.m_marvin.openui.core.UIRenderMode;
 import de.m_marvin.openui.core.components.Component;
 import de.m_marvin.openui.core.components.Compound;
 import de.m_marvin.simplelogging.Log;
-import de.m_marvin.unimat.MatUtil;
 import de.m_marvin.unimat.impl.Matrix4f;
 import de.m_marvin.univec.impl.Vec2f;
 import de.m_marvin.univec.impl.Vec2i;
@@ -102,7 +101,7 @@ public class UIContainer<R extends IResourceProvider<R>> {
 	 * @param size Screen size in pixels
 	 */
 	public void screenResize(Vec2i size) {
-		this.projectionMatrix = MatUtil.orthographicF(0, size.x, 0, size.y, -1F, 1F);
+		this.projectionMatrix = Matrix4f.orthographic(0, size.x, size.y, 0, -1F, 1F);
 		this.compound.setSize(size);
 		this.compound.updateLayout();
 	}
